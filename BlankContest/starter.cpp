@@ -56,7 +56,7 @@ typedef vector<vl>    vvl;
 #define clr(x,i) memset(x, i, sizeof(x))
 
 #ifndef ONLINE_JUDGE
-#define dbg(x) cerr <<__func__<<":"<<__LINE__<<" [" << #x << "] = ["; _print(x); cerr << "\n";
+#define dbg(x) cerr <<__func__<<":"<<__LINE__<<" [" << #x << "] = "; _print(x); cerr << "\n";
 #define dnl(x) cerr <<"----------- Test Case # " << x << " -----------\n";
 #else
 #define dbg(x)
