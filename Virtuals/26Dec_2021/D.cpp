@@ -56,7 +56,7 @@ typedef vector<vl>    vvl;
 #define clr(x,i) memset(x, i, sizeof(x))
 
 #ifndef ONLINE_JUDGE
-#define dbg(x) cerr <<__func__<<":"<<__LINE__<<" [" << #x << "] = ["; _print(x); cerr << "\n";
+#define dbg(x) cerr << #x <<": "; _print(x); cerr << "\n";
 #define dnl(x) cerr <<"----------- Test Case # " << x << " -----------\n";
 #else
 #define dbg(x)
@@ -89,7 +89,36 @@ const int N = 3e5, M = N;
 vvi g(N);
 
 void solve() {
+  int n;
+  cin>>n;
+  vi w(n+1,0);
+  int sum = 0;
+  rep(n){
+    int x;
+    cin>>x;
+    w[x]++;
+    sum += x;
+  }
+  dbg(w);
+
+  int mx = -1;
   
+  FOR(wt,1,sum+1){ // O(n^2)
+    int ans = 0;
+    FOR(i,1,n+1){ // O(n)
+      if(2 * i == wt){
+        ans += w[i]/2;
+      }
+      else if(2*i < wt && wt - i <= n){
+        ans += min(w[i],w[wt-i]);
+      }
+      else if(2 * i > wt) break;
+    }
+    dbg(wt);
+    dbg(ans);
+    mx = max(mx,ans);
+  }
+  cout<<mx<<"\n";
 }
 
 inline namespace FileIO {
@@ -131,20 +160,20 @@ int mpow(int base, int exp) {
 }
 
 void ipgraph(int n, int m){
-  int i, u, v;
-  while(m--){
-    cin>>u>>v;
+	int i, u, v;
+	while(m--){
+		cin>>u>>v;
     u--, v--;
-    g[u].pb(v);
-    g[v].pb(u);
-  }
+		g[u].pb(v);
+		g[v].pb(u);
+	}
 }
 
 void dfs(int u, int par){
-  for(int v:g[u]){
-    if (v == par) continue;
-    dfs(v, u);
-  }
+	for(int v:g[u]){
+		if (v == par) continue;
+		dfs(v, u);
+	}
 }
 
 void _print(ll t) {cerr << t;}

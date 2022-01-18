@@ -56,7 +56,7 @@ typedef vector<vl>    vvl;
 #define clr(x,i) memset(x, i, sizeof(x))
 
 #ifndef ONLINE_JUDGE
-#define dbg(x) cerr <<__func__<<":"<<__LINE__<<" [" << #x << "] = ["; _print(x); cerr << "\n";
+#define dbg(x) cerr << #x <<": "; _print(x); cerr << "\n";
 #define dnl(x) cerr <<"----------- Test Case # " << x << " -----------\n";
 #else
 #define dbg(x)
@@ -131,20 +131,20 @@ int mpow(int base, int exp) {
 }
 
 void ipgraph(int n, int m){
-  int i, u, v;
-  while(m--){
-    cin>>u>>v;
+	int i, u, v;
+	while(m--){
+		cin>>u>>v;
     u--, v--;
-    g[u].pb(v);
-    g[v].pb(u);
-  }
+		g[u].pb(v);
+		g[v].pb(u);
+	}
 }
 
 void dfs(int u, int par){
-  for(int v:g[u]){
-    if (v == par) continue;
-    dfs(v, u);
-  }
+	for(int v:g[u]){
+		if (v == par) continue;
+		dfs(v, u);
+	}
 }
 
 void _print(ll t) {cerr << t;}

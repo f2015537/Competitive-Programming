@@ -37,12 +37,10 @@ typedef vector<vl>    vvl;
 #define ub  upper_bound
 #define ins insert
 
-#define rsz resize
 #define sz(x) (int)x.size()
 #define beg(x) x.begin()
 #define en(x) x.end()
 #define all(x) beg(x), en(x)
-#define rall(x) x.rbegin(), x.rend()
 #define sortall(x) sort(all(x))
 
 #define FOR(i,a,b) for (int i = (a); i < (b); ++i)
@@ -56,7 +54,7 @@ typedef vector<vl>    vvl;
 #define clr(x,i) memset(x, i, sizeof(x))
 
 #ifndef ONLINE_JUDGE
-#define dbg(x) cerr <<__func__<<":"<<__LINE__<<" [" << #x << "] = ["; _print(x); cerr << "\n";
+#define dbg(x) cerr << #x <<": "; _print(x); cerr << "\n";
 #define dnl(x) cerr <<"----------- Test Case # " << x << " -----------\n";
 #else
 #define dbg(x)
@@ -79,17 +77,45 @@ template <class T> void _print(multiset <T> &v);
 
 int mpow(int base, int exp); 
 void ipgraph(int n, int m);
-void dfs(int u, int par);
+void dfs(int u);
 
 const int MOD = 1'000'000'007;
 const int INF = 2e9;
-const int N = 3e5, M = N;
+const int N = 4e5+10, M = N;
 //=======================
 
 vvi g(N);
+vi vis(N);
 
 void solve() {
-  
+  int n;
+  cin>>n;
+  vvi v(2, vi (n));
+  FOR(i,1,n+1){
+    g[i].clear();
+    vis[i] = 0;
+  }
+
+  F0R(i,2){
+    F0R(j,n){
+      cin>>v[i][j];
+    }
+  }
+
+  F0R(j,n){
+    int a = v[0][j];
+    int b = v[1][j];
+    g[a].pb(b);
+  }
+
+  int ct = 0;
+  FOR(i,1,n+1){
+    if(vis[i])  continue;
+    dfs(i);
+    ct++;
+  }
+
+  cout<< mpow(2, ct) <<"\n";
 }
 
 inline namespace FileIO {
@@ -131,20 +157,21 @@ int mpow(int base, int exp) {
 }
 
 void ipgraph(int n, int m){
-  int i, u, v;
-  while(m--){
-    cin>>u>>v;
+	int i, u, v;
+	while(m--){
+		cin>>u>>v;
     u--, v--;
-    g[u].pb(v);
-    g[v].pb(u);
-  }
+		g[u].pb(v);
+		g[v].pb(u);
+	}
 }
 
-void dfs(int u, int par){
-  for(int v:g[u]){
-    if (v == par) continue;
-    dfs(v, u);
-  }
+void dfs(int u){
+  vis[u] = 1;
+	for(int v:g[u]){
+		if (vis[v]) continue;
+		dfs(v);
+	}
 }
 
 void _print(ll t) {cerr << t;}

@@ -56,7 +56,7 @@ typedef vector<vl>    vvl;
 #define clr(x,i) memset(x, i, sizeof(x))
 
 #ifndef ONLINE_JUDGE
-#define dbg(x) cerr <<__func__<<":"<<__LINE__<<" [" << #x << "] = ["; _print(x); cerr << "\n";
+#define dbg(x) cerr << #x <<": "; _print(x); cerr << "\n";
 #define dnl(x) cerr <<"----------- Test Case # " << x << " -----------\n";
 #else
 #define dbg(x)
@@ -89,7 +89,41 @@ const int N = 3e5, M = N;
 vvi g(N);
 
 void solve() {
-  
+  int n;
+  cin>>n;
+  vi v(n);
+  F0R(i,n)  cin>>v[i];
+  vvi ans;
+  F0R(i,n-1){
+    if(gcd(v[i],v[i+1]) != 1){
+      if(v[i] <= v[i+1]){
+        v[i+1] = v[i] + 1;
+        ans.pb({i+1,i+2,v[i],v[i+1]});
+      }
+      else{
+        if(i == 0)  {
+          v[i] = v[i+1] + 1;
+          ans.pb({i+1,i+2,v[i],v[i+1]});
+        }
+        else{
+          for(int j = v[i+1]+1;;j++){
+            if(gcd(j,v[i+1]) == 1 && gcd(j,v[i-1]) == 1){
+              v[i] = j;
+              ans.pb({i+1,i+2,v[i],v[i+1]});
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
+  cout<<ans.size()<<"\n";
+  for(auto ele: ans){
+    for(int x: ele){
+      cout<<x<<" ";
+    }
+    cout<<"\n";
+  }
 }
 
 inline namespace FileIO {
@@ -131,20 +165,20 @@ int mpow(int base, int exp) {
 }
 
 void ipgraph(int n, int m){
-  int i, u, v;
-  while(m--){
-    cin>>u>>v;
+	int i, u, v;
+	while(m--){
+		cin>>u>>v;
     u--, v--;
-    g[u].pb(v);
-    g[v].pb(u);
-  }
+		g[u].pb(v);
+		g[v].pb(u);
+	}
 }
 
 void dfs(int u, int par){
-  for(int v:g[u]){
-    if (v == par) continue;
-    dfs(v, u);
-  }
+	for(int v:g[u]){
+		if (v == par) continue;
+		dfs(v, u);
+	}
 }
 
 void _print(ll t) {cerr << t;}
