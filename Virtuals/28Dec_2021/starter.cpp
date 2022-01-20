@@ -69,7 +69,7 @@ template <class T, class = decay_t<decltype(*begin(declval<T>()))>,
 ostream &operator<<(ostream &os, const T &c) {
   os << '[';
   tr(it,c)
-    os << &", "[2 * (it == c.begin())] << *it;
+    os << &", "[2 * (it == beg(c))] << *it;
   return os << ']';
 }
 //support up to 5 args
@@ -104,6 +104,7 @@ const int N = 3e5, M = N;
 //=======================
 
 vvi g(N);
+vi v(N);
 
 void solve() {
 
