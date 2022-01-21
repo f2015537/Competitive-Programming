@@ -104,10 +104,31 @@ const int N = 3e5, M = N;
 //=======================
 
 vvi g(N);
-vi v(N);
+vi value(N),weight(N);
+vvl dp(105, vl(100010, -1));
+
+ll kp1(int index, int avail){
+  if(avail == 0)  return 0LL;
+  if(index < 0) return 0LL;
+  if(dp[index][avail] != -1)  return dp[index][avail];
+  //Skip item at current index
+  ll ans = kp1(index-1,avail);
+  //Take item at current index
+  if(weight[index] <= avail)  ans = max(ans, value[index] + kp1(index-1, avail - weight[index]));
+  return dp[index][avail] = ans;
+}
 
 void solve() {
+ int n,W;
+ cin>>n>>W;
+ value.rsz(n);
+ weight.rsz(n);
 
+ F0R(i,n){
+  cin>>weight[i]>>value[i];
+ }
+
+ cout<<kp1(n-1,W)<<"\n";
 }
 
 inline namespace FileIO {
@@ -129,7 +150,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();

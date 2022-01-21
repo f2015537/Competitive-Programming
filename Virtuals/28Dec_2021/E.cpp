@@ -57,7 +57,7 @@ typedef vector<vl>    vvl;
 #define clr(x,i) memset(x, i, sizeof(x))
 
 // ************************DEBUG START********************************
-#ifdef chemecocs
+#ifndef ONLINE_JUDGE
 // #define cerr cout  // if you want to print to stdout, uncomment this
 template <class T1, class T2>
 ostream &operator<<(ostream &os, const pair<T1, T2> &p) {
@@ -107,7 +107,32 @@ vvi g(N);
 vi v(N);
 
 void solve() {
+  int n,W;
+  cin>>n>>W;
 
+  vi a(21);
+
+  rep(n){
+    int x;
+    cin>>x;
+    F0R(i,21){
+      if(1 << i == x){
+        a[i]++;
+      }
+    }
+  }
+
+  int h = 0;
+  while(any_of(all(a), [](int x){return x != 0;})){
+    int cur = 0;
+    R0F(i,21){
+      int pieces = min((W-cur)/(1<<i), a[i]);
+      cur += pieces * (1<<i);
+      a[i] -= pieces;
+    }
+    h++;
+  }
+  cout<<h<<"\n";
 }
 
 inline namespace FileIO {
@@ -120,7 +145,7 @@ inline namespace FileIO {
     // throws exception when do smth illegal
     // ex. try to read letter into int
     if (sz(s)) setIn(s+".in"), setOut(s+".out"); // for old USACO
-    #ifdef chemecocs
+    #ifndef ONLINE_JUDGE
       setErr();
     #endif
   }

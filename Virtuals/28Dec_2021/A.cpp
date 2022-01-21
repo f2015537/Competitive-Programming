@@ -94,6 +94,11 @@ ostream &operator<<(ostream &os, const T &c) {
 #endif
 // ************************DEBUG END**********************************
 
+
+// ************************SMALL UTILITIES********************************** 
+ll ceil_div(ll a, ll b) {assert(b);return (a+b-1)/b;}
+
+
 int mpow(int base, int exp); 
 void ipgraph(int n, int m);
 void dfs(int u, int par);
@@ -107,7 +112,23 @@ vvi g(N);
 vi v(N);
 
 void solve() {
+  ll a,b,c,d;
+  cin>>a>>b>>c>>d;
 
+  //Sleep for b mins
+  //if b >= a no more sleep needed
+  if(b >= a){
+    cout<<b<<"\n";
+    return;
+  }
+
+  //Otherwise, get c-d sleep every c mins 
+  if(c <= d){
+    cout<<"-1\n";
+  }
+  else{
+    cout<< b + c * ceil_div(a-b,c-d)<<"\n";
+  }
 }
 
 inline namespace FileIO {

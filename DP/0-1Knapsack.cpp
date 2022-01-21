@@ -57,7 +57,7 @@ typedef vector<vl>    vvl;
 #define clr(x,i) memset(x, i, sizeof(x))
 
 // ************************DEBUG START********************************
-#ifdef chemecocs
+#ifndef ONLINE_JUDGE
 // #define cerr cout  // if you want to print to stdout, uncomment this
 template <class T1, class T2>
 ostream &operator<<(ostream &os, const pair<T1, T2> &p) {
@@ -104,10 +104,28 @@ const int N = 3e5, M = N;
 //=======================
 
 vvi g(N);
-vi v(N);
+vi v(N),p(N);
+vvi dp(105, vi (10010, -1));
+
+//Maximum value that can be obtained using items upto index and capacity = avail
+int knapsack(int index, int avail){
+  if(avail == 0)  return 0;
+  if(index < 0) return 0;
+  if(dp[index][avail] != -1)  return dp[index][avail];
+  // Take it or skip it
+  int value = knapsack(index-1,avail);
+  if(v[index] <= avail)  value = max(value, p[index] + knapsack(index-1,avail-v[index]));
+  return dp[index][avail] = value;
+}
 
 void solve() {
-
+  int n,W;
+  cin>>n>>W;
+  v.rsz(n);
+  each(x,v) cin>>x;
+  p.rsz(n);
+  each(x,p) cin>>x;
+  cout<<knapsack(n-1,W)<<"\n";
 }
 
 inline namespace FileIO {
@@ -120,7 +138,7 @@ inline namespace FileIO {
     // throws exception when do smth illegal
     // ex. try to read letter into int
     if (sz(s)) setIn(s+".in"), setOut(s+".out"); // for old USACO
-    #ifdef chemecocs
+    #ifndef ONLINE_JUDGE
       setErr();
     #endif
   }
@@ -129,7 +147,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();
