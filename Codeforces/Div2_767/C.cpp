@@ -106,7 +106,6 @@ const int N = 2e5+5, M = N;
 vvi g(N);
 vi v(N);
 map<int,vi> hsh;
-vi b;
 
 int func(int index){
   //i should appear in the range [index..n]
@@ -117,7 +116,7 @@ int func(int index){
       rmax = max(rmax,*it);
     }
     else{
-      b.pb(i);
+      v.pb(i);
       break;
     }
   }
@@ -127,7 +126,7 @@ int func(int index){
 void solve() {
   int n;
   cin>>n;
-  b.clear();
+  v.clear();
   hsh.clear();
 
   F0R(i,n){ // O(n)
@@ -142,8 +141,8 @@ void solve() {
     index = func(index);
   }
 
-  cout<<sz(b)<<"\n";
-  each(x,b) cout<<x<<" ";
+  cout<<sz(v)<<"\n";
+  each(x,v) cout<<x<<" ";
   cout<<"\n";  
 }
 

@@ -107,10 +107,7 @@ vvi g(N);
 vi v(N);
 
 void solve() {
-  v.clear();
-  if(lb(all(v),5) == en(v)){
-    cout<<"Hello\n";
-  }
+
 }
 
 inline namespace FileIO {
@@ -132,7 +129,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    // cin >> t;
+    cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();
