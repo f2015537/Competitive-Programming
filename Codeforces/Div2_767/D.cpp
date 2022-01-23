@@ -1,4 +1,5 @@
 #include<bits/stdc++.h>
+
 using namespace std;
 
 typedef long long ll;
@@ -36,8 +37,8 @@ typedef vector<vl>    vvl;
 #define lb  lower_bound
 #define ub  upper_bound
 #define ins insert
-
 #define rsz resize
+
 #define sz(x) (int)x.size()
 #define beg(x) x.begin()
 #define en(x) x.end()
@@ -51,31 +52,47 @@ typedef vector<vl>    vvl;
 #define R0F(i,a) ROF(i,0,a)
 #define rep(a) F0R(_,a)
 #define each(a,x) for (auto& a: x)
-#define tr(it, x) for(auto it = beg(x); it != en(x); it++)
+#define tr(it, x) for(auto it = beg(x); it != en(x); ++it)
 
 #define clr(x,i) memset(x, i, sizeof(x))
 
-#ifndef ONLINE_JUDGE
-#define dbg(x) cerr <<__func__<<":"<<__LINE__<<" [" << #x << "] = "; _print(x); cerr << "\n";
+// ************************DEBUG START********************************
+#ifdef chemecocs
+// #define cerr cout  // if you want to print to stdout, uncomment this
+template <class T1, class T2>
+ostream &operator<<(ostream &os, const pair<T1, T2> &p) {
+  return os << '{' << p.first << ", " << p.second << '}';
+}
+
+template <class T, class = decay_t<decltype(*begin(declval<T>()))>,
+          class = enable_if_t<!is_same<T, string>::value>>
+ostream &operator<<(ostream &os, const T &c) {
+  os << '[';
+  tr(it,c)
+    os << &", "[2 * (it == beg(c))] << *it;
+  return os << ']';
+}
+//support up to 5 args
+#define _NTH_ARG(_1, _2, _3, _4, _5, _6, N, ...) N
+#define _FE_0(_CALL, ...)
+#define _FE_1(_CALL, x) _CALL(x)
+#define _FE_2(_CALL, x, ...) _CALL(x) _FE_1(_CALL, __VA_ARGS__)
+#define _FE_3(_CALL, x, ...) _CALL(x) _FE_2(_CALL, __VA_ARGS__)
+#define _FE_4(_CALL, x, ...) _CALL(x) _FE_3(_CALL, __VA_ARGS__)
+#define _FE_5(_CALL, x, ...) _CALL(x) _FE_4(_CALL, __VA_ARGS__)
+#define FOR_EACH_MACRO(MACRO, ...)                                             \
+  _NTH_ARG(dummy, ##__VA_ARGS__, _FE_5, _FE_4, _FE_3, _FE_2, _FE_1, _FE_0)     \
+  (MACRO, ##__VA_ARGS__)
+//Change output format here
+#define out(x) #x " = " << x << "; "
+#define dbg(...)                                                              \
+  cerr << __func__ << ":" << __LINE__ << ": " FOR_EACH_MACRO(out, __VA_ARGS__) << "\n"
 #define dnl(x) cerr <<"----------- Test Case # " << x << " -----------\n";
 #else
-#define dbg(x)
+#define dbg(...)
 #define dnl(x)
 #endif
-
-void _print(ll t);
-void _print(int t);
-void _print(str t);
-void _print(char t);
-void _print(ld t);
-void _print(double t);
-void _print(ull t);
-
-template <class T, class V> void _print(pair <T, V> &p);
-template <class T> void _print(vector <T> &v);
-template <class T> void _print(set <T> &v);
-template <class T, class V> void _print(map <T, V> &v);
-template <class T> void _print(multiset <T> &v);
+// ************************DEBUG END**********************************
 
 int mpow(int base, int exp); 
 void ipgraph(int n, int m);
@@ -87,30 +104,13 @@ const int N = 3e5, M = N;
 //=======================
 
 vvi g(N);
-vi v(N), dp(N,-1);
-int amount;
-
-int coin(int amount){
-  if(amount < 0)  return INT_MAX;
-  if(amount == 0) return 0;
-  if(dp[amount] != -1)  return dp[amount];
-  int mn = INT_MAX;
-
-  each(x,v) mn = min(mn, coin(amount-x));
-
-  if(mn == INT_MAX) return dp[amount] = INT_MAX;
-  return dp[amount] = mn+1;
-}
+vi v(N);
 
 void solve() {
-  int n;
-  cin>>n;
-  v.rsz(n);
-  F0R(i,n)  cin>>v[i];
-  int amount;
-  cin>>amount;
-  if(coin(amount) == INT_MAX) cout<<"-1\n";
-  else cout<<coin(amount)<<"\n";
+  v.clear();
+  if(lb(all(v),5) == en(v)){
+    cout<<"Hello\n";
+  }
 }
 
 inline namespace FileIO {
@@ -123,7 +123,7 @@ inline namespace FileIO {
     // throws exception when do smth illegal
     // ex. try to read letter into int
     if (sz(s)) setIn(s+".in"), setOut(s+".out"); // for old USACO
-    #ifndef ONLINE_JUDGE
+    #ifdef chemecocs
       setErr();
     #endif
   }
@@ -167,17 +167,3 @@ void dfs(int u, int par){
     dfs(v, u);
   }
 }
-
-void _print(ll t) {cerr << t;}
-void _print(int t) {cerr << t;}
-void _print(str t) {cerr << t;}
-void _print(char t) {cerr << t;}
-void _print(ld t) {cerr << t;}
-void _print(double t) {cerr << t;}
-void _print(ull t) {cerr << t;}
-
-template <class T, class V> void _print(pair <T, V> &p) {cerr << "{"; _print(p.F); cerr << ","; _print(p.S); cerr << "}";}
-template <class T> void _print(vector <T> &v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
-template <class T> void _print(set <T> &v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
-template <class T> void _print(multiset <T> &v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
-template <class T, class V> void _print(map <T, V> &v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
