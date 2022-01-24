@@ -105,21 +105,40 @@ const int N = 3e5, M = N;
 
 vvi g(N);
 vi v(N);
-vvi grid = {{3,7,9,2,7},{9,8,3,5,5},{1,7,9,8,5},{3,8,6,4,10},{6,3,9,7,8}};
-vvi dp(5, vi (5,-1));
-
-int func(int r, int c){
-  if(dp[r][c] != -1)  return dp[r][c];
-  int ans = 0;
-  if(r + 1 < sz(grid)) ans = max(ans,func(r+1,c));
-  if(c + 1 < sz(grid[0])) ans = max(ans,func(r,c+1));
-  ans += grid[r][c];
-  return dp[r][c] = ans;
-}
+vpi edges;
+int ct;
+map<pi,int> hsh;
 
 void solve() {
-  cout<<func(0,0)<<"\n";
-  dbg(dp);
+  int n;
+  cin>>n;
+  FOR(i,1,n+1)  g[i].clear();  
+  edges.clear();
+  hsh.clear();
+  ct = 0;
+  rep(n-1){
+    int u, v;
+    cin>>u>>v;
+    edges.pb({u,v});
+    g[u].pb(v);
+    g[v].pb(u);
+  }
+
+  FOR(i,1,n+1){
+    if(sz(g[i]) > 2){
+      cout<<"-1\n";
+      return;
+    }
+  }
+
+  FOR(i,1,n+1){
+    if(sz(g[i]) == 1){
+      dfs(i,0);
+      break;
+    }
+  }
+  each(p,edges) cout<<hsh[p]<<" ";
+  cout<<"\n";
 }
 
 inline namespace FileIO {
@@ -141,7 +160,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    // cin >> t;
+    cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();
@@ -173,6 +192,9 @@ void ipgraph(int n, int m){
 void dfs(int u, int par){
   for(int v:g[u]){
     if (v == par) continue;
+    if(ct%2==0) hsh[{u,v}] = hsh[{v,u}] = 2;
+    else hsh[{u,v}] = hsh[{v,u}] = 3;
+    ct++;
     dfs(v, u);
   }
 }

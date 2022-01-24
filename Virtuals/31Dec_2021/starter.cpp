@@ -105,21 +105,9 @@ const int N = 3e5, M = N;
 
 vvi g(N);
 vi v(N);
-vvi grid = {{3,7,9,2,7},{9,8,3,5,5},{1,7,9,8,5},{3,8,6,4,10},{6,3,9,7,8}};
-vvi dp(5, vi (5,-1));
-
-int func(int r, int c){
-  if(dp[r][c] != -1)  return dp[r][c];
-  int ans = 0;
-  if(r + 1 < sz(grid)) ans = max(ans,func(r+1,c));
-  if(c + 1 < sz(grid[0])) ans = max(ans,func(r,c+1));
-  ans += grid[r][c];
-  return dp[r][c] = ans;
-}
 
 void solve() {
-  cout<<func(0,0)<<"\n";
-  dbg(dp);
+
 }
 
 inline namespace FileIO {
@@ -141,7 +129,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    // cin >> t;
+    cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();
