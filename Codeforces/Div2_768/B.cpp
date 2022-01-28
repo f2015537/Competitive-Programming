@@ -109,7 +109,6 @@ ll mod_add(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a + b) % m) + m) %
 ll mod_mul(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a * b) % m) + m) % m;}
 ll mod_sub(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a - b) % m) + m) % m;}
 ll mod_div(ll a, ll b, ll m) {a = a % m; b = b % m; return (mod_mul(a, mminvprime(b, m), m) + m) % m;}  //only for prime m
-ll ceil_div(ll a, ll b) {return (a+b-1)/b;}
 ll phin(ll n) {ll number = n; if (n % 2 == 0) {number /= 2; while (n % 2 == 0) n /= 2;} for (ll i = 3; i <= sqrt(n); i += 2) {if (n % i == 0) {while (n % i == 0)n /= i; number = (number / i * (i - 1));}} if (n > 1)number = (number / n * (n - 1)) ; return number;} //O(sqrt(N))
 // ************************MATH END**********************************
  
@@ -125,7 +124,28 @@ vvi g(N);
 vi v(N);
 
 void solve() {
+  int n;
+  cin>>n;
+  v.rsz(n);
+  each(x,v) cin>>x;
 
+  int ct = 0;
+  R0F(i,n-1){
+    if(v[i] != v[i+1]){
+      //Find length to the right
+      int len = n-1-i;
+      v[i] = v[i+1];
+      int j = i-1;
+      rep(len-1){
+        if(j < 0) break;
+        v[j] = v[i+1];
+        j--;
+      }
+      ct++;
+    }
+  }
+
+  cout<<ct<<"\n";
 }
 
 inline namespace FileIO {

@@ -125,7 +125,41 @@ vvi g(N);
 vi v(N);
 
 void solve() {
+  int n,k;
+  cin>>n>>k;
 
+  if(k == 0){
+    int l = 0, r = n-1;
+    while(l < r){
+      cout<<l++<<" "<<r--<<"\n";
+    }
+  }
+
+  else if(k == n-1){ 
+    if(n == 4){
+      cout<<"-1\n";
+    } 
+    else{
+      cout<<ceil_div(k,2)<<" "<<ceil_div(k,2)+1<<"\n";
+      cout<<k-ceil_div(k,2)<<" "<<n-1<<"\n";
+      cout<<n-1-(ceil_div(k,2)+1)<<" "<<0<<"\n";
+      for(int i = n-2; i >= n/2; --i){
+        if(i == ceil_div(k,2) || i == ceil_div(k,2)+1 || i == k-ceil_div(k,2) || i == n-1-(ceil_div(k,2)+1))  continue;
+        cout<<i<<" "<<n-1-i<<"\n";
+      }
+    }
+  }
+
+  else{
+    cout<<k<<" "<<n-1<<"\n";
+    cout<<n-1-k<<" "<<0<<"\n";
+    for(int i = n-2; i >= n/2; --i){
+      if(i == k || i == n-1-k)  continue;
+      cout<<i<<" "<<n-1-i<<"\n";
+    }
+  }
+
+  cout<<"\n";
 }
 
 inline namespace FileIO {

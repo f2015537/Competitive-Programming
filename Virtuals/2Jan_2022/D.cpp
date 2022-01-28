@@ -109,7 +109,6 @@ ll mod_add(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a + b) % m) + m) %
 ll mod_mul(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a * b) % m) + m) % m;}
 ll mod_sub(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a - b) % m) + m) % m;}
 ll mod_div(ll a, ll b, ll m) {a = a % m; b = b % m; return (mod_mul(a, mminvprime(b, m), m) + m) % m;}  //only for prime m
-ll ceil_div(ll a, ll b) {return (a+b-1)/b;}
 ll phin(ll n) {ll number = n; if (n % 2 == 0) {number /= 2; while (n % 2 == 0) n /= 2;} for (ll i = 3; i <= sqrt(n); i += 2) {if (n % i == 0) {while (n % i == 0)n /= i; number = (number / i * (i - 1));}} if (n > 1)number = (number / n * (n - 1)) ; return number;} //O(sqrt(N))
 // ************************MATH END**********************************
  
@@ -125,7 +124,46 @@ vvi g(N);
 vi v(N);
 
 void solve() {
+  set<int> x;
+  set<int> y;
+  set<pi> ans;
+  int n;
+  cin>>n;
 
+  //Case 1: First move along x direction
+  for(int i = 0, j = (n+1)/2; i <= j; ++i){
+    // i is no. moves towards right, j - i is the no.of moves towards left
+    x.ins(i - (j-i));
+  }
+
+  for(int i = 0, j = n/2; i <= j; ++i){
+    y.ins(i-(j-i));
+  }
+
+  each(ele1,x){
+    each(ele2,y){
+      ans.ins({ele1,ele2});
+    }
+  }
+  x.clear();
+  y.clear();
+  //Case 2: First move along y direction
+  for(int i = 0, j = (n+1)/2; i <= j; ++i){
+    // i is no. moves towards up, j - i is the no.of moves towards down
+    y.ins(i - (j-i));
+  }
+
+  for(int i = 0, j = n/2; i <= j; ++i){
+    x.ins(i-(j-i));
+  }
+
+  each(ele1,x){
+    each(ele2,y){
+      ans.ins({ele1,ele2});
+    }
+  }
+
+  cout<<sz(ans)<<"\n";
 }
 
 inline namespace FileIO {
@@ -147,7 +185,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();

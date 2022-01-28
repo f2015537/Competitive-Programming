@@ -109,7 +109,6 @@ ll mod_add(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a + b) % m) + m) %
 ll mod_mul(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a * b) % m) + m) % m;}
 ll mod_sub(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a - b) % m) + m) % m;}
 ll mod_div(ll a, ll b, ll m) {a = a % m; b = b % m; return (mod_mul(a, mminvprime(b, m), m) + m) % m;}  //only for prime m
-ll ceil_div(ll a, ll b) {return (a+b-1)/b;}
 ll phin(ll n) {ll number = n; if (n % 2 == 0) {number /= 2; while (n % 2 == 0) n /= 2;} for (ll i = 3; i <= sqrt(n); i += 2) {if (n % i == 0) {while (n % i == 0)n /= i; number = (number / i * (i - 1));}} if (n > 1)number = (number / n * (n - 1)) ; return number;} //O(sqrt(N))
 // ************************MATH END**********************************
  
@@ -125,7 +124,27 @@ vvi g(N);
 vi v(N);
 
 void solve() {
-
+  ll n;
+  cin>>n;
+  int ct = 0;
+  while(n > 1){
+    //Build the tallest possible pyramid with these n cards
+    ll lo = 1, hi = 1e5;
+    //T T T F F F
+    while(hi - lo > 1){
+      ll mid = (hi+lo)>>1;
+      if((mid)*(mid+1) + ((mid)*(mid-1))/2 <= n){
+        lo = mid;
+      }
+      else{
+        hi = mid-1;
+      }
+    }
+    if((hi)*(hi+1) + ((hi)*(hi-1))/2 <= n)  n -= (hi)*(hi+1) + ((hi)*(hi-1))/2;
+    else n -= (lo)*(lo+1) + ((lo)*(lo-1))/2;
+    ct++;
+  }
+  cout<<ct<<"\n";
 }
 
 inline namespace FileIO {

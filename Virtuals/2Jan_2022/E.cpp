@@ -109,23 +109,53 @@ ll mod_add(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a + b) % m) + m) %
 ll mod_mul(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a * b) % m) + m) % m;}
 ll mod_sub(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a - b) % m) + m) % m;}
 ll mod_div(ll a, ll b, ll m) {a = a % m; b = b % m; return (mod_mul(a, mminvprime(b, m), m) + m) % m;}  //only for prime m
-ll ceil_div(ll a, ll b) {return (a+b-1)/b;}
 ll phin(ll n) {ll number = n; if (n % 2 == 0) {number /= 2; while (n % 2 == 0) n /= 2;} for (ll i = 3; i <= sqrt(n); i += 2) {if (n % i == 0) {while (n % i == 0)n /= i; number = (number / i * (i - 1));}} if (n > 1)number = (number / n * (n - 1)) ; return number;} //O(sqrt(N))
 // ************************MATH END**********************************
  
 void ipgraph(int n, int m);
-void dfs(int u, int par);
+void dfs(int u);
 
 const int MOD = 1'000'000'007;
 const int INF = 2e9;
-const int N = 3e5, M = N;
+const int N = 1e6, M = N;
 //=======================
 
 vvi g(N);
-vi v(N);
+vi v(N),vis(N);
+int ct;
 
 void solve() {
-
+  int n,m;
+  cin>>n>>m;
+  F0R(i,n){
+    F0R(j,m){
+      //Tile number is given by m*i + j
+      int x;
+      cin>>x;
+      int tile = m*i + j;
+      if((x&1) == 0){//0th bit unset(West)
+        g[tile].pb(m*i+j-1);
+      }
+      if((x&2) == 0){//1st bit unset(South)
+        g[tile].pb(m*(i+1)+j);
+      }
+      if((x&4) == 0){//2nd bit unset(East)
+        g[tile].pb(m*i+j+1);
+      }
+      if((x&8) == 0){//3rd bit unset(North)
+        g[tile].pb(m*(i-1)+j);
+      }
+    }
+  }
+  vi ans;
+  F0R(i,n*m){
+    if(vis[i])  continue;
+    ct = 0;
+    dfs(i);
+    ans.pb(ct);
+  }
+  sort(rall(ans));
+  each(x,ans) cout<<x<<" ";
 }
 
 inline namespace FileIO {
@@ -147,7 +177,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();
@@ -165,9 +195,11 @@ void ipgraph(int n, int m){
   }
 }
 
-void dfs(int u, int par){
+void dfs(int u){
+  vis[u] = 1;
+  ct++;
   for(int v:g[u]){
-    if (v == par) continue;
-    dfs(v, u);
+    if (vis[v]) continue;
+    dfs(v);
   }
 }
