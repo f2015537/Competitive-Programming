@@ -87,8 +87,7 @@ ostream &operator<<(ostream &os, const T &c) {
 #define out(x) #x " = " << x << "; "
 #define dbg(...)                                                              \
   cerr << __func__ << ":" << __LINE__ << ": " FOR_EACH_MACRO(out, __VA_ARGS__) << "\n"
-#define dnl(x)                                                                \
-  cerr <<"----------- Test Case # " << x << " -----------\n"
+#define dnl(x) cerr <<"----------- Test Case # " << x << " -----------\n";
 #else
 #define dbg(...)
 #define dnl(x)
@@ -123,10 +122,48 @@ const int N = 3e5, M = N;
 //=======================
 
 vvi g(N);
-vi v(N);
+
+bool pred(int x, vpi v){
+  int y = 0;
+  int i = 0;
+  while(y < x && i < sz(v)){
+    y++;
+    v[i].F--;
+    i++;
+  }
+  return y == x && v[sz(v)-1].F >= x;
+}
 
 void solve() {
+  int n;
+  cin>>n;
+  map<int,int> freq;
+  vpi v;
+  rep(n){
+    int x;
+    cin>>x;
+    freq[x]++;
+  }
 
+  each(p,freq)  v.pb({p.S,p.F});
+
+  sortall(v);
+
+  int lo = 0, hi = n/2;
+
+  while(hi-lo>1){//O(nlgn)
+    int mid = (lo+hi)>>1;
+    if(pred(mid,v)){
+      lo = mid;
+    }
+    else{
+      hi = mid-1;
+    }
+  }
+  int ans;
+  if(pred(hi,v))  ans = hi;
+  else ans = lo;
+  cout<<ans<<"\n";
 }
 
 inline namespace FileIO {

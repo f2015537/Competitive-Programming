@@ -87,8 +87,7 @@ ostream &operator<<(ostream &os, const T &c) {
 #define out(x) #x " = " << x << "; "
 #define dbg(...)                                                              \
   cerr << __func__ << ":" << __LINE__ << ": " FOR_EACH_MACRO(out, __VA_ARGS__) << "\n"
-#define dnl(x)                                                                \
-  cerr <<"----------- Test Case # " << x << " -----------\n"
+#define dnl(x) cerr <<"----------- Test Case # " << x << " -----------\n";
 #else
 #define dbg(...)
 #define dnl(x)
@@ -126,7 +125,39 @@ vvi g(N);
 vi v(N);
 
 void solve() {
+  int n;
+  cin>>n;
+  set<pi> info; //info.F = sociability info.S = id
 
+  FOR(i,1,n+1){ //O(nlgn)
+    int id = i;
+    int x;
+    cin>>x;
+    info.ins({x,id});
+  }
+
+  dbg(info);
+
+  while(beg(info)->F == 0){//O(nlgn)
+    info.erase(beg(info));
+  }
+
+  dbg(info);
+  vpi ans;
+  while(sz(info) >= 2){//(Mlgn) where M is the sum of sociability
+    ans.pb({beg(info)->S,(--en(info))->S});
+    pi p1 = *beg(info);
+    pi p2 = *(--en(info));
+    p1.F--;
+    p2.F--;
+    info.erase(beg(info));
+    info.erase(--en(info));
+    if(p1.F > 0)  info.ins(p1);
+    if(p2.F > 0)  info.ins(p2);
+  }
+
+  cout<<sz(ans)<<"\n";
+  each(p,ans) cout<<p.F<<" "<<p.S<<"\n";
 }
 
 inline namespace FileIO {

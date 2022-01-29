@@ -87,8 +87,7 @@ ostream &operator<<(ostream &os, const T &c) {
 #define out(x) #x " = " << x << "; "
 #define dbg(...)                                                              \
   cerr << __func__ << ":" << __LINE__ << ": " FOR_EACH_MACRO(out, __VA_ARGS__) << "\n"
-#define dnl(x)                                                                \
-  cerr <<"----------- Test Case # " << x << " -----------\n"
+#define dnl(x) cerr <<"----------- Test Case # " << x << " -----------\n";
 #else
 #define dbg(...)
 #define dnl(x)
@@ -126,7 +125,30 @@ vvi g(N);
 vi v(N);
 
 void solve() {
+  int n;
+  cin>>n;
+  map<int,int> mp1,mp2;
+  
+  F0R(i,n){
+    int x;
+    cin>>x;
+    mp1[x] = i;
+  }
 
+  F0R(i,n){
+    int x;
+    cin>>x;
+    mp2[x] = i;
+  }
+
+  int temp = INT_MAX;
+  int ans = INT_MAX;
+  for(int i = 2*n-1; i >= 1; i-=2){
+    temp = min(temp, mp2[i+1]);
+    ans = min(ans, mp1[i]+temp);
+    dbg(i,ans,temp);
+  }
+  cout<<ans<<"\n";
 }
 
 inline namespace FileIO {

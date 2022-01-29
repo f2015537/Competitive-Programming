@@ -87,8 +87,7 @@ ostream &operator<<(ostream &os, const T &c) {
 #define out(x) #x " = " << x << "; "
 #define dbg(...)                                                              \
   cerr << __func__ << ":" << __LINE__ << ": " FOR_EACH_MACRO(out, __VA_ARGS__) << "\n"
-#define dnl(x)                                                                \
-  cerr <<"----------- Test Case # " << x << " -----------\n"
+#define dnl(x) cerr <<"----------- Test Case # " << x << " -----------\n";
 #else
 #define dbg(...)
 #define dnl(x)
@@ -126,7 +125,39 @@ vvi g(N);
 vi v(N);
 
 void solve() {
+  int n;
+  ll W;
+  cin>>n>>W;
+  ll temp = W;
+  vpi v;
 
+  FOR(i,1,n+1){
+    int w;
+    cin>>w;
+    v.pb({w,i});
+  }
+  sort(rall(v));
+  dbg(v);
+
+  int i = 0;
+  vi ans;
+  ll used = 0;
+
+  F0R(i,n){
+    if(v[i].F > W)  continue;
+    W -= v[i].F;
+    used += v[i].F;
+    ans.pb(v[i].S);
+  }
+
+  if(used < ceil_div(temp,2)){
+    cout<<"-1\n";
+    return;
+  }
+
+  cout<<sz(ans)<<"\n";
+  each(index,ans) cout<<index<<" ";
+  cout<<"\n";
 }
 
 inline namespace FileIO {

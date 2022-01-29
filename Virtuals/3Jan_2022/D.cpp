@@ -87,8 +87,7 @@ ostream &operator<<(ostream &os, const T &c) {
 #define out(x) #x " = " << x << "; "
 #define dbg(...)                                                              \
   cerr << __func__ << ":" << __LINE__ << ": " FOR_EACH_MACRO(out, __VA_ARGS__) << "\n"
-#define dnl(x)                                                                \
-  cerr <<"----------- Test Case # " << x << " -----------\n"
+#define dnl(x) cerr <<"----------- Test Case # " << x << " -----------\n";
 #else
 #define dbg(...)
 #define dnl(x)
@@ -124,9 +123,61 @@ const int N = 3e5, M = N;
 
 vvi g(N);
 vi v(N);
+vl primes = sieve(1e5);
+ll n;
+
+bool pred(ll mid, ll prime){
+  ll prod = 1;
+  rep(mid)  prod *= prime;
+  return n % prod == 0;
+}
 
 void solve() {
+  cin>>n;
+  dbg(sz(primes)); // 10^4
 
+  //For every prime find the highest power such that n % (prime^power) == 0
+  //T T T F F
+  map<ll,ll> primepow;
+
+  each(prime, primes){
+    if(prime*prime > n) break;
+    ll lo = 0, hi = 40;
+    while(hi - lo > 1){
+      ll mid = (hi + lo)>>1;
+      if(pred(mid,prime)){
+        lo = mid;
+      }
+      else{
+        hi = mid-1;
+      }
+    }
+    if(pred(hi,prime))  primepow[prime] = hi;
+    else primepow[prime] = lo;
+  }
+
+  ll mxfactor,mxfreq = 0;
+
+  each(p,primepow){
+    if(p.S > mxfreq){
+      mxfreq = p.S;
+      mxfactor = p.F;
+    }
+  }
+
+  if(mxfreq == 0){
+    cout<<1<<"\n";
+    cout<<n<<"\n";
+    return;
+  }
+
+  cout<<mxfreq<<"\n";
+  ll prod = 1;
+  rep(mxfreq-1){
+    prod *= mxfactor;
+    cout<<mxfactor<<" ";
+  }
+  cout<<n/prod<<"\n";
 }
 
 inline namespace FileIO {

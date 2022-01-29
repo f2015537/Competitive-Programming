@@ -87,8 +87,7 @@ ostream &operator<<(ostream &os, const T &c) {
 #define out(x) #x " = " << x << "; "
 #define dbg(...)                                                              \
   cerr << __func__ << ":" << __LINE__ << ": " FOR_EACH_MACRO(out, __VA_ARGS__) << "\n"
-#define dnl(x)                                                                \
-  cerr <<"----------- Test Case # " << x << " -----------\n"
+#define dnl(x) cerr <<"----------- Test Case # " << x << " -----------\n";
 #else
 #define dbg(...)
 #define dnl(x)
@@ -126,7 +125,28 @@ vvi g(N);
 vi v(N);
 
 void solve() {
+  string p,h;
+  cin>>p>>h;
+  vi hsh(26);
+  each(c,p) hsh[c-'a']++;
 
+  //Let's iterate over substrings of size = sz(p) in h
+
+  F0R(i,sz(h)){//O(100*100*26)
+    int l = i;
+    int r = i + sz(p) - 1;
+    if(r >= sz(h))  break;
+    vi hsh2(26);
+    for(int j = i; j <= r; ++j){
+      hsh2[h[j]-'a']++;
+    }
+    if(hsh==hsh2){
+      cout<<"YES\n";
+      return;
+    }
+  }
+
+  cout<<"NO\n";
 }
 
 inline namespace FileIO {
