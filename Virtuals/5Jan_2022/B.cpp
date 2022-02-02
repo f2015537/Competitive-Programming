@@ -87,14 +87,15 @@ ostream &operator<<(ostream &os, const T &c) {
 #define out(x) #x " = " << x << "; "
 #define dbg(...)                                                              \
   cerr << __func__ << ":" << __LINE__ << ": " FOR_EACH_MACRO(out, __VA_ARGS__) << "\n"
-#define dnl(x) cerr <<"----------- Test Case # " << x << " -----------\n";
+#define dnl(x)                                                                \
+  cerr <<"----------- Test Case # " << x << " -----------\n"
 #else
 #define dbg(...)
 #define dnl(x)
 #endif
 // ************************DEBUG END**********************************
 
-// ************************MATH START********************************
+// ************************MATH START*********************************
 ll gcd(ll a, ll b) {if (b > a) {return gcd(b, a);} if (b == 0) {return a;} return gcd(b, a % b);}
 ll expo(ll a, ll b, ll mod) {ll res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
 void extendgcd(ll a, ll b, ll*v) {if (b == 0) {v[0] = 1; v[1] = 0; v[2] = a; return ;} extendgcd(b, a % b, v); ll x = v[1]; v[1] = v[0] - v[1] * (a / b); v[0] = x; return;} //pass an arry of size1 3
@@ -109,8 +110,9 @@ ll mod_add(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a + b) % m) + m) %
 ll mod_mul(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a * b) % m) + m) % m;}
 ll mod_sub(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a - b) % m) + m) % m;}
 ll mod_div(ll a, ll b, ll m) {a = a % m; b = b % m; return (mod_mul(a, mminvprime(b, m), m) + m) % m;}  //only for prime m
+ll ceil_div(ll a, ll b) {return (a+b-1)/b;}
 ll phin(ll n) {ll number = n; if (n % 2 == 0) {number /= 2; while (n % 2 == 0) n /= 2;} for (ll i = 3; i <= sqrt(n); i += 2) {if (n % i == 0) {while (n % i == 0)n /= i; number = (number / i * (i - 1));}} if (n > 1)number = (number / n * (n - 1)) ; return number;} //O(sqrt(N))
-// ************************MATH END********************************
+// ************************MATH END**********************************
  
 void ipgraph(int n, int m);
 void dfs(int u, int par);
@@ -122,36 +124,20 @@ const int N = 3e5, M = N;
 
 vvi g(N);
 vi v(N);
-vvl pre(52, vl(15005));
-vvl current(52, vl(15005));
 
 void solve() {
   int n,x;
   cin>>n>>x;
-  vi skill(n);
-  each(x,skill) cin>>x;
-  sortall(skill);
-  pre[0][5000] = 1;
-  for(int i = 1; i <= n; ++i){
-    for(int j = 0; j <= 50; ++j){
-      for(int k = 0; k <= 10000; ++k){
-        current[j][k] += pre[j][k]; //ith person makes a team alone
-        current[j][k] += j * pre[j][k]; //ith person enters an unfinshed team
-        current[j][k] += (j+1) * pre[j+1][k-skill[i-1]]; //ith person finishes an unfinished team
-        if(j) current[j][k] += pre[j-1][k+skill[i-1]]; //ith person starts a new unfinshed team
-        current[j][k] %= MOD; 
-      }
-    }
-    for(int j = 0; j <= 50; ++j){
-      for(int k = 0; k <= 10000; ++k){
-        pre[j][k] = current[j][k];
-        current[j][k] = 0;
-      }
-    }
-  }
-  ll ans = 0;
-  for(int i = 5000; i <= 5000 + x; ++i){
-    ans = (ans + pre[0][i])%MOD;
+  vi v(n+1,INF);
+  FOR(i,1,n+1)  cin>>v[i];
+  sort(rall(v));
+  dbg(v);
+  vl pf(n+1);
+  int ans = 0;
+  FOR(i,1,n+1){
+    pf[i] = v[i] + pf[i-1];
+    if(pf[i] >= 1LL * i * x)  ans = i;
+    else break;
   }
   cout<<ans<<"\n";
 }
@@ -175,7 +161,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    // cin >> t;
+    cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();
