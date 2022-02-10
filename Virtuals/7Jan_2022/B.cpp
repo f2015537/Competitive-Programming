@@ -125,36 +125,39 @@ const int N = 3e5, M = N;
 vvi g(N);
 vi v(N);
 
-bool pred(int mid){
-  vi newH = v;
-  for(int i = sz(v)-1; i >= 2; --i){
-    if(newH[i] < mid) return false;
-    int d = min(v[i], newH[i]-mid)/3;
-    newH[i-1] += d;
-    newH[i-2] += 2*d;
-  } 
-  return newH[0] >= mid and newH[1] >= mid;
-}
-
 void solve() {
-  int n;
-  cin>>n;
-  v.rsz(n);
-  each(x,v) cin>>x;
-  dbg(v);
-
-  int lo = 1, hi = 1e9;
-
-  while(hi-lo > 1){//O(nlog(1e9))
-    int mid = (hi+lo)>>1;
-    if(pred(mid)) lo = mid;
-    else hi = mid-1;
+  int a,b,c,d;
+  cin>>a>>b>>c>>d;
+  int x,y,x1,y1,x2,y2;
+  cin>>x>>y>>x1>>y1>>x2>>y2;
+  bool ok = true;
+  
+  if(a > b){
+    ok &= x1 <= x - (a-b); 
+  }
+  else if(a < b){
+    ok &= x2 >= x + (b-a);
+  }
+  else if(a && b){
+    ok &= x1 <= x-1 || x2 >= x+1;
   }
 
-  int ans;
-  if(pred(hi))  ans = hi;
-  else ans = lo;
-  cout<<ans<<"\n";
+  if(c > d){
+    ok &= y1 <= y - (c-d);
+  }
+  else if(c < d){
+    ok &= y2 >= y + (d-c);
+  }
+  else if(c && d){
+    ok &= y1 <= y-1 || y2 >= y+1; 
+  }
+
+  if(ok){
+    cout<<"YES\n";
+  }
+  else{
+    cout<<"NO\n";
+  }
 }
 
 inline namespace FileIO {

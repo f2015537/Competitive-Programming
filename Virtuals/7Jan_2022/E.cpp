@@ -124,37 +124,59 @@ const int N = 3e5, M = N;
 
 vvi g(N);
 vi v(N);
+vector<set<int>> adj;
 
-bool pred(int mid){
-  vi newH = v;
-  for(int i = sz(v)-1; i >= 2; --i){
-    if(newH[i] < mid) return false;
-    int d = min(v[i], newH[i]-mid)/3;
-    newH[i-1] += d;
-    newH[i-2] += 2*d;
-  } 
-  return newH[0] >= mid and newH[1] >= mid;
+bool good(int node){
+  return adj[node].lower_bound(node) == adj[node].end();
 }
 
 void solve() {
-  int n;
-  cin>>n;
-  v.rsz(n);
-  each(x,v) cin>>x;
-  dbg(v);
+  int n,m;
+  cin>>n>>m;
+  adj.clear();
+  adj.rsz(n+1);
 
-  int lo = 1, hi = 1e9;
-
-  while(hi-lo > 1){//O(nlog(1e9))
-    int mid = (hi+lo)>>1;
-    if(pred(mid)) lo = mid;
-    else hi = mid-1;
+  rep(m){
+    int u,v;
+    cin>>u>>v;
+    adj[u].ins(v);
+    adj[v].ins(u);
   }
 
-  int ans;
-  if(pred(hi))  ans = hi;
-  else ans = lo;
-  cout<<ans<<"\n";
+  unordered_set<int> good_nodes;
+  FOR(i,1,n+1){
+    if(good(i)) good_nodes.ins(i);
+  }
+
+  int q;
+  cin>>q;
+  rep(q){
+    int a;
+    cin>>a;
+    if(a == 3){
+      cout<<sz(good_nodes)<<"\n";
+    }
+    else if(a == 1){
+      int u,v;
+      cin>>u>>v;
+      adj[u].ins(v);
+      adj[v].ins(u);
+      if(good(u)) good_nodes.ins(u);
+      else good_nodes.erase(u);
+      if(good(v)) good_nodes.ins(v);
+      else good_nodes.erase(v);
+    }
+    else{
+      int u,v;
+      cin>>u>>v;
+      adj[u].erase(v);
+      adj[v].erase(u);
+      if(good(u)) good_nodes.ins(u);
+      else good_nodes.erase(u);
+      if(good(v)) good_nodes.ins(v);
+      else good_nodes.erase(v);
+    }
+  }
 }
 
 inline namespace FileIO {
@@ -176,7 +198,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();

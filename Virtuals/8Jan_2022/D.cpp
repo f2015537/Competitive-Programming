@@ -125,36 +125,34 @@ const int N = 3e5, M = N;
 vvi g(N);
 vi v(N);
 
-bool pred(int mid){
-  vi newH = v;
-  for(int i = sz(v)-1; i >= 2; --i){
-    if(newH[i] < mid) return false;
-    int d = min(v[i], newH[i]-mid)/3;
-    newH[i-1] += d;
-    newH[i-2] += 2*d;
-  } 
-  return newH[0] >= mid and newH[1] >= mid;
+bool cmp(pi& p1, pi& p2){
+  if(p1.S > p2.S) return true;
+  else if(p1.S < p2.S) return false;
+  else  return p1.F < p2.F; 
 }
 
 void solve() {
   int n;
   cin>>n;
-  v.rsz(n);
-  each(x,v) cin>>x;
-  dbg(v);
+  map<int,int> mp;
 
-  int lo = 1, hi = 1e9;
-
-  while(hi-lo > 1){//O(nlog(1e9))
-    int mid = (hi+lo)>>1;
-    if(pred(mid)) lo = mid;
-    else hi = mid-1;
+  rep(n){
+    int x,y;
+    cin>>x>>y;
+    mp[x]++;
+    mp[y]--;
+  }
+  dbg(mp);
+  int x = 0;
+  vpi ans;
+  each(p,mp){
+    x += p.S;
+    ans.pb({p.F,x});
   }
 
-  int ans;
-  if(pred(hi))  ans = hi;
-  else ans = lo;
-  cout<<ans<<"\n";
+  sort(all(ans), cmp);
+  dbg(ans);
+  cout<<ans[0].F<<" "<<ans[0].S<<"\n";
 }
 
 inline namespace FileIO {
@@ -176,7 +174,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();

@@ -125,36 +125,30 @@ const int N = 3e5, M = N;
 vvi g(N);
 vi v(N);
 
-bool pred(int mid){
-  vi newH = v;
-  for(int i = sz(v)-1; i >= 2; --i){
-    if(newH[i] < mid) return false;
-    int d = min(v[i], newH[i]-mid)/3;
-    newH[i-1] += d;
-    newH[i-2] += 2*d;
-  } 
-  return newH[0] >= mid and newH[1] >= mid;
-}
-
 void solve() {
-  int n;
-  cin>>n;
-  v.rsz(n);
-  each(x,v) cin>>x;
-  dbg(v);
+  int a,b,c,d;
+  cin>>a>>b>>c>>d;
+  vs ans(4,"Tidak");
 
-  int lo = 1, hi = 1e9;
-
-  while(hi-lo > 1){//O(nlog(1e9))
-    int mid = (hi+lo)>>1;
-    if(pred(mid)) lo = mid;
-    else hi = mid-1;
+  if((a+b)&1){//Product is negative
+    if(b+c > 0){//Product with abs val < 1 is possible
+      ans[1] = "Ya";
+    }
+    if(a+d > 0){//Product with abs val >= 1 is possible
+      ans[0] = "Ya";
+    }
+  }
+  else{//Product is positive
+    if(b+c > 0){
+      ans[2] = "Ya";
+    }
+    if(a+d > 0){
+      ans[3] = "Ya";
+    }
   }
 
-  int ans;
-  if(pred(hi))  ans = hi;
-  else ans = lo;
-  cout<<ans<<"\n";
+  each(s,ans) cout<<s<<" ";
+  cout<<"\n";
 }
 
 inline namespace FileIO {

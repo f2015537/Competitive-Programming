@@ -87,8 +87,7 @@ ostream &operator<<(ostream &os, const T &c) {
 #define out(x) #x " = " << x << "; "
 #define dbg(...)                                                              \
   cerr << __func__ << ":" << __LINE__ << ": " FOR_EACH_MACRO(out, __VA_ARGS__) << "\n"
-#define dnl(x)                                                                \
-  cerr <<"----------- Test Case # " << x << " -----------\n"
+#define dnl(x) cerr <<"----------- Test Case # " << x << " -----------\n";
 #else
 #define dbg(...)
 #define dnl(x)
@@ -125,36 +124,42 @@ const int N = 3e5, M = N;
 vvi g(N);
 vi v(N);
 
-bool pred(int mid){
-  vi newH = v;
-  for(int i = sz(v)-1; i >= 2; --i){
-    if(newH[i] < mid) return false;
-    int d = min(v[i], newH[i]-mid)/3;
-    newH[i-1] += d;
-    newH[i-2] += 2*d;
-  } 
-  return newH[0] >= mid and newH[1] >= mid;
-}
-
 void solve() {
-  int n;
-  cin>>n;
-  v.rsz(n);
-  each(x,v) cin>>x;
-  dbg(v);
+  vi nums = {7,7,7,7,7,7,7};
+  int n = sz(nums);
+  vi dp(n+1,INF);
+  dp[0] = -INF;
+  map<int,int> par;
 
-  int lo = 1, hi = 1e9;
-
-  while(hi-lo > 1){//O(nlog(1e9))
-    int mid = (hi+lo)>>1;
-    if(pred(mid)) lo = mid;
-    else hi = mid-1;
+  F0R(i,n){
+    //Find the smallest j such that dp[j] > nums[i]
+    int j = ub(all(dp),nums[i]) - beg(dp);
+    if(dp[j-1] < nums[i]){
+      dp[j] = nums[i];
+      par[dp[j]] = dp[j-1];
+    } 
   }
+  dbg(dp);
+  dbg(par);
 
-  int ans;
-  if(pred(hi))  ans = hi;
-  else ans = lo;
-  cout<<ans<<"\n";
+  int mx = 1;
+  for(int i = 2; i <= n; ++i){
+    if(dp[i] < INF) mx = i;
+  }
+  dbg(mx);
+  vi ans;
+  for(int i = 1; i <= n; ++i){
+    if(i == mx){
+      ans.pb(dp[i]);
+      int parent = par[dp[i]];
+      while(parent != -INF){
+        ans.pb(parent);
+        parent = par[parent];
+      }
+      break;
+    }
+  }
+  dbg(ans);
 }
 
 inline namespace FileIO {
@@ -176,7 +181,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();

@@ -87,8 +87,7 @@ ostream &operator<<(ostream &os, const T &c) {
 #define out(x) #x " = " << x << "; "
 #define dbg(...)                                                              \
   cerr << __func__ << ":" << __LINE__ << ": " FOR_EACH_MACRO(out, __VA_ARGS__) << "\n"
-#define dnl(x)                                                                \
-  cerr <<"----------- Test Case # " << x << " -----------\n"
+#define dnl(x) cerr <<"----------- Test Case # " << x << " -----------\n";
 #else
 #define dbg(...)
 #define dnl(x)
@@ -125,35 +124,55 @@ const int N = 3e5, M = N;
 vvi g(N);
 vi v(N);
 
-bool pred(int mid){
-  vi newH = v;
-  for(int i = sz(v)-1; i >= 2; --i){
-    if(newH[i] < mid) return false;
-    int d = min(v[i], newH[i]-mid)/3;
-    newH[i-1] += d;
-    newH[i-2] += 2*d;
-  } 
-  return newH[0] >= mid and newH[1] >= mid;
+bool pred(int mid, vi& a, vi& dp, int i){
+  return a[i] > dp[mid];
 }
 
 void solve() {
   int n;
   cin>>n;
-  v.rsz(n);
-  each(x,v) cin>>x;
-  dbg(v);
+  vpi v(n);
+  F0R(i,n){
+    cin>>v[i].F>>v[i].S;
+  }
+  sortall(v);
+  vi a(n);
+  F0R(i,n)  a[i] = v[i].S;
+  dbg(a);
+  vi dp(n+1,-INF);
+  dp[0] = INF;
+  for(int i = 0; i < n; ++i){
+    // for(int j = 1; j <= n; ++j){
+    //   if(dp[j-1] > a[i] and a[i] > dp[j]){
+    //     dp[j] = a[i];
+    //   }
+    // }
+    //Find first j such that dp[j] < a[i]
+    //F F F T T
+    int lo = 1, hi = n;
+    while(hi - lo > 1){
+      int mid = (lo+hi)>>1;
+      if(pred(mid,a,dp,i)){
+        hi = mid;
+      }
+      else{
+        lo = mid+1;
+      }
+    }
+    int j;
+    if(pred(lo,a,dp,i)) j = lo;
+    else j = hi;
+    if(dp[j-1] > a[i]){
+      dp[j] = a[i];
+    }  
+  } 
 
-  int lo = 1, hi = 1e9;
+  int ans = 1;
 
-  while(hi-lo > 1){//O(nlog(1e9))
-    int mid = (hi+lo)>>1;
-    if(pred(mid)) lo = mid;
-    else hi = mid-1;
+  FOR(i,2,n+1){
+    if(dp[i] > -INF)  ans = i;
   }
 
-  int ans;
-  if(pred(hi))  ans = hi;
-  else ans = lo;
   cout<<ans<<"\n";
 }
 
@@ -176,7 +195,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();

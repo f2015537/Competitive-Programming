@@ -125,36 +125,43 @@ const int N = 3e5, M = N;
 vvi g(N);
 vi v(N);
 
-bool pred(int mid){
-  vi newH = v;
-  for(int i = sz(v)-1; i >= 2; --i){
-    if(newH[i] < mid) return false;
-    int d = min(v[i], newH[i]-mid)/3;
-    newH[i-1] += d;
-    newH[i-2] += 2*d;
-  } 
-  return newH[0] >= mid and newH[1] >= mid;
-}
-
 void solve() {
-  int n;
-  cin>>n;
-  v.rsz(n);
-  each(x,v) cin>>x;
-  dbg(v);
+  string s;
+  cin>>s;
 
-  int lo = 1, hi = 1e9;
-
-  while(hi-lo > 1){//O(nlog(1e9))
-    int mid = (hi+lo)>>1;
-    if(pred(mid)) lo = mid;
-    else hi = mid-1;
+  vi temp;
+  F0R(i,sz(s)){
+    if(s[i] == 'a') temp.pb(0);
+    else if(s[i] == 'b')  temp.pb(1);
+    else if(s[i] == 'c')  temp.pb(2);
+    else temp.pb(-1);
   }
 
-  int ans;
-  if(pred(hi))  ans = hi;
-  else ans = lo;
-  cout<<ans<<"\n";
+  F0R(i,sz(s)){
+    if(temp[i] != -1) continue;
+    vi taken(3);
+    if(i - 1 >= 0 and temp[i-1] != -1) taken[temp[i-1]] = 1;
+    if(i + 1 < sz(s) and temp[i+1] != -1) taken[temp[i+1]] = 1;
+    F0R(j,3)  if(taken[j] == 0) temp[i] = j;
+  }
+
+  string ans;
+
+  F0R(i,sz(s)){
+    ans.pb('a' + temp[i]);
+  }
+
+  bool ok = true;
+
+  FOR(i,1,sz(s))  ok &= ans[i] != ans[i-1];
+
+  if(ok){
+    cout<<ans<<"\n";
+  }
+  else{
+    cout<<"-1"<<"\n";
+  }
+
 }
 
 inline namespace FileIO {

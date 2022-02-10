@@ -125,36 +125,34 @@ const int N = 3e5, M = N;
 vvi g(N);
 vi v(N);
 
-bool pred(int mid){
-  vi newH = v;
-  for(int i = sz(v)-1; i >= 2; --i){
-    if(newH[i] < mid) return false;
-    int d = min(v[i], newH[i]-mid)/3;
-    newH[i-1] += d;
-    newH[i-2] += 2*d;
-  } 
-  return newH[0] >= mid and newH[1] >= mid;
-}
-
 void solve() {
-  int n;
-  cin>>n;
-  v.rsz(n);
-  each(x,v) cin>>x;
-  dbg(v);
+  str y;
+  cin>>y;
 
-  int lo = 1, hi = 1e9;
+  int ct = count(all(y),'0');
 
-  while(hi-lo > 1){//O(nlog(1e9))
-    int mid = (hi+lo)>>1;
-    if(pred(mid)) lo = mid;
-    else hi = mid-1;
+  if(ct == 0){
+    cout<<"cyan\n";
   }
+  else{
+    str s;
+    rep(ct-1) s.pb('0');
+    each(c,y) if(c != '0')  s.pb(c);
+    dbg(s);
 
-  int ans;
-  if(pred(hi))  ans = hi;
-  else ans = lo;
-  cout<<ans<<"\n";
+    int sum = 0;
+    bool even = false;
+    each(c,s){
+      sum += c - '0';
+      even |= (c-'0')%2==0;
+    }
+    if(sum%3==0 and even){
+      cout<<"red\n";
+    }
+    else{
+      cout<<"cyan\n";
+    }
+  }
 }
 
 inline namespace FileIO {

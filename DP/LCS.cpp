@@ -87,8 +87,7 @@ ostream &operator<<(ostream &os, const T &c) {
 #define out(x) #x " = " << x << "; "
 #define dbg(...)                                                              \
   cerr << __func__ << ":" << __LINE__ << ": " FOR_EACH_MACRO(out, __VA_ARGS__) << "\n"
-#define dnl(x)                                                                \
-  cerr <<"----------- Test Case # " << x << " -----------\n"
+#define dnl(x) cerr <<"----------- Test Case # " << x << " -----------\n";
 #else
 #define dbg(...)
 #define dnl(x)
@@ -125,35 +124,38 @@ const int N = 3e5, M = N;
 vvi g(N);
 vi v(N);
 
-bool pred(int mid){
-  vi newH = v;
-  for(int i = sz(v)-1; i >= 2; --i){
-    if(newH[i] < mid) return false;
-    int d = min(v[i], newH[i]-mid)/3;
-    newH[i-1] += d;
-    newH[i-2] += 2*d;
-  } 
-  return newH[0] >= mid and newH[1] >= mid;
-}
-
 void solve() {
   int n;
   cin>>n;
-  v.rsz(n);
-  each(x,v) cin>>x;
-  dbg(v);
-
-  int lo = 1, hi = 1e9;
-
-  while(hi-lo > 1){//O(nlog(1e9))
-    int mid = (hi+lo)>>1;
-    if(pred(mid)) lo = mid;
-    else hi = mid-1;
+  vi a(n);
+  each(x,a) cin>>x;
+  vi pos(n+1);
+  F0R(i,n){
+    int x;
+    cin>>x;
+    pos[x] = i+1;
   }
 
-  int ans;
-  if(pred(hi))  ans = hi;
-  else ans = lo;
+  vi c(n);
+  F0R(i,n){
+    c[i] = pos[a[i]];
+  }
+  dbg(c);
+  //We need to find the length of LIS of c
+
+  vi dp(n+1,INF);
+  dp[0] = -INF;
+  for(int i = 0; i < n; ++i){
+    //Find first j such that c[i] < dp[j] 
+    int j = ub(all(dp),c[i]) - beg(dp);
+    if(dp[j-1] < c[i]){
+      dp[j] = c[i];
+    }
+  }
+  int ans = 1;
+  FOR(i,2,n+1){
+    if(dp[i] < INF) ans = i;
+  }
   cout<<ans<<"\n";
 }
 
@@ -176,7 +178,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();

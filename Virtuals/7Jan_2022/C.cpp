@@ -125,36 +125,69 @@ const int N = 3e5, M = N;
 vvi g(N);
 vi v(N);
 
-bool pred(int mid){
-  vi newH = v;
-  for(int i = sz(v)-1; i >= 2; --i){
-    if(newH[i] < mid) return false;
-    int d = min(v[i], newH[i]-mid)/3;
-    newH[i-1] += d;
-    newH[i-2] += 2*d;
-  } 
-  return newH[0] >= mid and newH[1] >= mid;
-}
-
 void solve() {
-  int n;
-  cin>>n;
-  v.rsz(n);
-  each(x,v) cin>>x;
-  dbg(v);
+  string s;
+  cin>>s;
+  map<char,vi> hsh;
+  F0R(i,sz(s)) hsh[s[i]].pb(i);
+  dbg(hsh);
+  
+  int ans = INT_MAX;
+  F0R(i,sz(s)){
+    if(s[i] == '1'){
+      int l = i;
+      int r = INT_MIN;
 
-  int lo = 1, hi = 1e9;
+      if(lb(all(hsh['2']),i) != en(hsh['2'])){
+        r = max(r,*lb(all(hsh['2']),i));
+      }
+      else  continue;
 
-  while(hi-lo > 1){//O(nlog(1e9))
-    int mid = (hi+lo)>>1;
-    if(pred(mid)) lo = mid;
-    else hi = mid-1;
-  }
+      if(lb(all(hsh['3']),i) != en(hsh['3'])){
+        r = max(r,*lb(all(hsh['3']),i));
+      }
+      else continue;
+      dbg(r-l+1);
+      ans = min(ans, r-l+1);
+    }
 
-  int ans;
-  if(pred(hi))  ans = hi;
-  else ans = lo;
-  cout<<ans<<"\n";
+    else if(s[i] == '2'){
+      int l = i;
+      int r = INT_MIN;
+
+      if(lb(all(hsh['1']),i) != en(hsh['1'])){
+        r = max(r,*lb(all(hsh['1']),i));
+      }
+      else  continue;
+
+      if(lb(all(hsh['3']),i) != en(hsh['3'])){
+        r = max(r,*lb(all(hsh['3']),i));
+      }
+      else continue;
+      dbg(r-l+1);
+      ans = min(ans, r-l+1);
+    }
+
+    else{
+      int l = i;
+      int r = INT_MIN;
+
+      if(lb(all(hsh['1']),i) != en(hsh['1'])){
+        r = max(r,*lb(all(hsh['1']),i));
+      }
+      else  continue;
+
+      if(lb(all(hsh['2']),i) != en(hsh['2'])){
+        r = max(r,*lb(all(hsh['2']),i));
+      }
+      else continue;
+      dbg(r-l+1);
+      ans = min(ans, r-l+1);
+    }
+
+  } 
+
+  cout << (ans == INT_MAX ? 0 : ans) <<"\n"; 
 }
 
 inline namespace FileIO {

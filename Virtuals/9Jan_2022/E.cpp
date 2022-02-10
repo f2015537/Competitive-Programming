@@ -125,35 +125,26 @@ const int N = 3e5, M = N;
 vvi g(N);
 vi v(N);
 
-bool pred(int mid){
-  vi newH = v;
-  for(int i = sz(v)-1; i >= 2; --i){
-    if(newH[i] < mid) return false;
-    int d = min(v[i], newH[i]-mid)/3;
-    newH[i-1] += d;
-    newH[i-2] += 2*d;
-  } 
-  return newH[0] >= mid and newH[1] >= mid;
-}
-
 void solve() {
-  int n;
-  cin>>n;
-  v.rsz(n);
-  each(x,v) cin>>x;
-  dbg(v);
-
-  int lo = 1, hi = 1e9;
-
-  while(hi-lo > 1){//O(nlog(1e9))
-    int mid = (hi+lo)>>1;
-    if(pred(mid)) lo = mid;
-    else hi = mid-1;
+  string s;
+  cin>>s;
+  int n = sz(s);
+  vvl dp(n+1, vl(2));
+  ll ans = 0;
+  FOR(i,1,n+1){
+    if(s[i-1] == '1'){
+      dp[i][1] = 1LL + dp[i-1][0];
+    }
+    else if(s[i-1] == '0'){
+      dp[i][0] = 1LL + dp[i-1][1];
+    }
+    else{
+      dp[i][0] = 1LL + dp[i-1][1];
+      dp[i][1] = 1LL + dp[i-1][0];
+    }
+    ans += max(dp[i][0],dp[i][1]);
+    dbg(ans);
   }
-
-  int ans;
-  if(pred(hi))  ans = hi;
-  else ans = lo;
   cout<<ans<<"\n";
 }
 

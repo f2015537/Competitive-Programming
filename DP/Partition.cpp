@@ -87,8 +87,7 @@ ostream &operator<<(ostream &os, const T &c) {
 #define out(x) #x " = " << x << "; "
 #define dbg(...)                                                              \
   cerr << __func__ << ":" << __LINE__ << ": " FOR_EACH_MACRO(out, __VA_ARGS__) << "\n"
-#define dnl(x)                                                                \
-  cerr <<"----------- Test Case # " << x << " -----------\n"
+#define dnl(x) cerr <<"----------- Test Case # " << x << " -----------\n";
 #else
 #define dbg(...)
 #define dnl(x)
@@ -125,36 +124,20 @@ const int N = 3e5, M = N;
 vvi g(N);
 vi v(N);
 
-bool pred(int mid){
-  vi newH = v;
-  for(int i = sz(v)-1; i >= 2; --i){
-    if(newH[i] < mid) return false;
-    int d = min(v[i], newH[i]-mid)/3;
-    newH[i-1] += d;
-    newH[i-2] += 2*d;
-  } 
-  return newH[0] >= mid and newH[1] >= mid;
-}
-
 void solve() {
-  int n;
-  cin>>n;
-  v.rsz(n);
-  each(x,v) cin>>x;
-  dbg(v);
-
-  int lo = 1, hi = 1e9;
-
-  while(hi-lo > 1){//O(nlog(1e9))
-    int mid = (hi+lo)>>1;
-    if(pred(mid)) lo = mid;
-    else hi = mid-1;
+  vi nums = {100,100,100,100,100,100,100,100};
+  int sum = accumulate(all(nums),0);
+  sum /= 2;
+  vi possible(sum+1);
+  possible[0] = 1;
+  F0R(i,sz(nums)){
+    R0F(x,sum+1){
+      if(x-nums[i] >= 0) possible[x] |= possible[x-nums[i]];
+    }
   }
-
-  int ans;
-  if(pred(hi))  ans = hi;
-  else ans = lo;
-  cout<<ans<<"\n";
+  dbg(sum);
+  dbg(possible);
+  cout<<possible[sum];
 }
 
 inline namespace FileIO {
@@ -176,7 +159,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();

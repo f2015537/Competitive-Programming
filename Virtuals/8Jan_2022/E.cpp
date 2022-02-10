@@ -125,36 +125,25 @@ const int N = 3e5, M = N;
 vvi g(N);
 vi v(N);
 
-bool pred(int mid){
-  vi newH = v;
-  for(int i = sz(v)-1; i >= 2; --i){
-    if(newH[i] < mid) return false;
-    int d = min(v[i], newH[i]-mid)/3;
-    newH[i-1] += d;
-    newH[i-2] += 2*d;
-  } 
-  return newH[0] >= mid and newH[1] >= mid;
-}
-
 void solve() {
   int n;
   cin>>n;
-  v.rsz(n);
-  each(x,v) cin>>x;
+  vi v(n+1,-INF);
+  FOR(i,1,n+1) cin>>v[i];
+  sortall(v);
   dbg(v);
+  //Jumps of 2 or more
+  ll temp1 = 0, temp2 = 0;
 
-  int lo = 1, hi = 1e9;
-
-  while(hi-lo > 1){//O(nlog(1e9))
-    int mid = (hi+lo)>>1;
-    if(pred(mid)) lo = mid;
-    else hi = mid-1;
+  for(int i = n-2,ct=1; i >= 1; --i,++ct){
+    temp1 += 1LL*ct*v[i];
   }
 
-  int ans;
-  if(pred(hi))  ans = hi;
-  else ans = lo;
-  cout<<ans<<"\n";
+  for(int i = 3,ct=1; i <= n; ++i,++ct){
+    temp2 += 1LL*ct*v[i];
+  }
+
+  cout<<temp1-temp2<<"\n";
 }
 
 inline namespace FileIO {

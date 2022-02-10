@@ -125,36 +125,34 @@ const int N = 3e5, M = N;
 vvi g(N);
 vi v(N);
 
-bool pred(int mid){
-  vi newH = v;
-  for(int i = sz(v)-1; i >= 2; --i){
-    if(newH[i] < mid) return false;
-    int d = min(v[i], newH[i]-mid)/3;
-    newH[i-1] += d;
-    newH[i-2] += 2*d;
-  } 
-  return newH[0] >= mid and newH[1] >= mid;
-}
-
 void solve() {
-  int n;
-  cin>>n;
-  v.rsz(n);
-  each(x,v) cin>>x;
-  dbg(v);
+  int n,k;
+  cin>>n>>k;
+  //Case 1: 1 1 1 ..(k-1) times
+  int rem = n - (k-1);
 
-  int lo = 1, hi = 1e9;
-
-  while(hi-lo > 1){//O(nlog(1e9))
-    int mid = (hi+lo)>>1;
-    if(pred(mid)) lo = mid;
-    else hi = mid-1;
+  if(rem <= 0 ||  rem % 2 == 0){
+    //Do nothing
+  }
+  else{
+    cout<<"YES\n";
+    rep(k-1)  cout<<1<<" ";
+    cout<<rem<<"\n";
+    return;
   }
 
-  int ans;
-  if(pred(hi))  ans = hi;
-  else ans = lo;
-  cout<<ans<<"\n";
+  rem = n - 2*(k-1);
+  if(rem <= 0 || rem&1){
+    //Do nothing
+  }
+  else{
+    cout<<"YES\n";
+    rep(k-1)  cout<<2<<" ";
+    cout<<rem<<"\n";
+    return;
+  }
+
+  cout<<"NO\n";
 }
 
 inline namespace FileIO {
