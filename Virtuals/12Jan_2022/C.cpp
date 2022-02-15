@@ -128,54 +128,27 @@ vi v(N);
 void solve() {
   int n;
   cin>>n;
-  vi a(n),b(n);
+  vi p(n),c(n);
 
-  int sq_sum = 0;
-  int sum = 0;
-
-  each(x,a){
-    cin>>x;
-    sq_sum += x * x;
-    sum += x;
+  F0R(i,n){
+    cin>>p[i]>>c[i];
   }
 
-  each(x,b){
-    cin>>x;
-    sq_sum += x * x;
-    sum += x;
-  }
-
-  if(n == 1){
-    cout<<0<<"\n";
-    return;
-  }
-
-  int base_ans = (n-2)*sq_sum;
-
-  vvi dp(3, vi(10001)); //Memory optimized dp
-
-  dp[0][a[0]] = 1;
-  dp[0][b[0]] = 1;
-
-  FOR(i,1,n){
-    F0R(j, 10001){
-      if(a[i] <= j) dp[1][j] |= dp[0][j-a[i]];
-      if(b[i] <= j) dp[1][j] |= dp[0][j-b[i]];
+  if(is_sorted(all(p)) and is_sorted(all(c))){
+    bool ok = c[0] <= p[0];
+    FOR(i,1,n){
+      ok &= (c[i] - c[i-1] <= p[i] - p[i-1]) and (c[i] <= p[i]);
     }
-    dp[0] = dp[1];
-    dp[1] = dp[2]; //Cool step by yours truly
-  }
-
-  int ans = INF;
-  F0R(j, 10001){
-    if(dp[0][j]){
-      int s1 = j;
-      int s2 = sum - s1;
-      ans = min(ans, s1*s1 + s2*s2);
+    if(ok){
+      cout<<"YES\n";
+    }
+    else{
+      cout<<"NO\n";
     }
   }
-
-  cout<<base_ans + ans<<"\n";
+  else{
+    cout<<"NO\n";
+  }
 }
 
 inline namespace FileIO {

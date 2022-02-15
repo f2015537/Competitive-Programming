@@ -130,52 +130,42 @@ void solve() {
   cin>>n;
   vi a(n),b(n);
 
-  int sq_sum = 0;
-  int sum = 0;
+  each(x,a) cin>>x;
+  each(x,b) cin>>x;
 
-  each(x,a){
-    cin>>x;
-    sq_sum += x * x;
-    sum += x;
+  vi diff_indices;
+  vi diff_values;
+
+  F0R(i,n){
+    if(a[i] != b[i])  {
+      diff_indices.pb(i);
+      diff_values.pb(b[i]-a[i]);
+    }
+
   }
 
-  each(x,b){
-    cin>>x;
-    sq_sum += x * x;
-    sum += x;
-  }
+  int m = sz(diff_indices);
 
-  if(n == 1){
-    cout<<0<<"\n";
+  if(m == 0){
+    cout<<"YES\n";
     return;
   }
 
-  int base_ans = (n-2)*sq_sum;
+  bool ok1 = true;
+  bool ok2 = diff_values[0] > 0;
 
-  vvi dp(3, vi(10001)); //Memory optimized dp
-
-  dp[0][a[0]] = 1;
-  dp[0][b[0]] = 1;
-
-  FOR(i,1,n){
-    F0R(j, 10001){
-      if(a[i] <= j) dp[1][j] |= dp[0][j-a[i]];
-      if(b[i] <= j) dp[1][j] |= dp[0][j-b[i]];
-    }
-    dp[0] = dp[1];
-    dp[1] = dp[2]; //Cool step by yours truly
+  FOR(i,1,m){
+    ok1 &= diff_indices[i] - diff_indices[i-1] == 1;
+    ok2 &= diff_values[i] == diff_values[i-1];
   }
 
-  int ans = INF;
-  F0R(j, 10001){
-    if(dp[0][j]){
-      int s1 = j;
-      int s2 = sum - s1;
-      ans = min(ans, s1*s1 + s2*s2);
-    }
+  if(ok1 && ok2){
+    cout<<"YES\n";
+  }
+  else{
+    cout<<"NO\n";
   }
 
-  cout<<base_ans + ans<<"\n";
 }
 
 inline namespace FileIO {

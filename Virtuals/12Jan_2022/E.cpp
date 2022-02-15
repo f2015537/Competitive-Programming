@@ -125,57 +125,52 @@ const int N = 3e5, M = N;
 vvi g(N);
 vi v(N);
 
+bool cmp(vl& v1, vl& v2){
+  return sz(v1) > sz(v2);
+}
+
 void solve() {
   int n;
   cin>>n;
-  vi a(n),b(n);
 
-  int sq_sum = 0;
-  int sum = 0;
+  vvl v(n+1);
+  vpl p(n);
 
-  each(x,a){
-    cin>>x;
-    sq_sum += x * x;
-    sum += x;
+  each(x,p) cin>>x.F; // University
+  each(x,p) cin>>x.S; // Skill
+
+  for(auto& [uni,skill]: p){
+    v[uni].pb(skill);
   }
 
-  each(x,b){
-    cin>>x;
-    sq_sum += x * x;
-    sum += x;
+  F0R(i,n+1){
+    sort(rall(v[i]));
   }
+  sort(all(v), cmp);
 
-  if(n == 1){
-    cout<<0<<"\n";
-    return;
-  }
+  dbg(v);
+  vvl pf(n+1, vl(1,0));
 
-  int base_ans = (n-2)*sq_sum;
-
-  vvi dp(3, vi(10001)); //Memory optimized dp
-
-  dp[0][a[0]] = 1;
-  dp[0][b[0]] = 1;
-
-  FOR(i,1,n){
-    F0R(j, 10001){
-      if(a[i] <= j) dp[1][j] |= dp[0][j-a[i]];
-      if(b[i] <= j) dp[1][j] |= dp[0][j-b[i]];
-    }
-    dp[0] = dp[1];
-    dp[1] = dp[2]; //Cool step by yours truly
-  }
-
-  int ans = INF;
-  F0R(j, 10001){
-    if(dp[0][j]){
-      int s1 = j;
-      int s2 = sum - s1;
-      ans = min(ans, s1*s1 + s2*s2);
+  F0R(i,n+1){
+    for(int j = 0; j < sz(v[i]); ++j){
+      pf[i].pb(pf[i][j] + v[i][j]);
     }
   }
+  vl output;
+  dbg(v,pf);
+  FOR(k,1,n+1){
+    ll ans = 0;
+    F0R(i,n+1){
+      int x = sz(v[i]) / k; //# teams from university i
+      int y = x * k; //# players from university i
+      if(y == 0)  break;
+      ans += pf[i][y];
+    }
+    output.pb(ans);
+  }
 
-  cout<<base_ans + ans<<"\n";
+  each(x, output) cout<<x<<" ";
+  cout<<"\n";
 }
 
 inline namespace FileIO {
