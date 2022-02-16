@@ -125,8 +125,32 @@ const int N = 3e5, M = N;
 vvi g(N);
 vi v(N);
 
-void solve() {
+int query(int i){
+  cout<<"? "<<i<<endl;
+  int x;
+  cin>>x;
+  return x;
+}
 
+void solve() {
+  int n;
+  cin>>n;
+
+  vi ans(n+1);
+
+  FOR(i,1,n+1){
+    if(ans[i])  continue;
+    vi c{query(i)};
+    do{
+      c.pb(query(i));
+    }while(c.back() != c.front());
+    FOR(j,1,sz(c)){
+      ans[c[j-1]] = c[j];
+    }
+  }
+  cout<<"! ";
+  FOR(i,1,n+1)  cout<<ans[i]<<" ";
+  cout<<endl;
 }
 
 inline namespace FileIO {
