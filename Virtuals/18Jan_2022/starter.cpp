@@ -124,57 +124,9 @@ const int N = 3e5, M = N;
 
 vvi g(N);
 vi v(N);
-vi dp(N), pre(N);
- 
-void preSolve(){
-  dp[1] = 1;
-  dp[2] = 1;
-  pre[1] = 1;
-  pre[2] = 2;
-  FOR(i,3,N){
-    dp[i] = mod_add(dp[i-1], dp[i-2], MOD);
-    pre[i] = mod_add(dp[i], pre[i-1], MOD);
-  }
-}
 
 void solve() {
- int n,p;
- cin>>n>>p;
 
- v.rsz(n);
- each(x,v)  cin>>x;
- sortall(v);
- set<int> useful;
- each(x,v){
-  //If any parent of x is in useful, x is not useful
-  int temp = x;
-  bool valid = true;
-  while(temp > 1){
-    if(temp % 2)  temp >>= 1;
-    else if(temp % 4 == 0)  temp >>= 2;
-    else break;
-
-    if(useful.count(temp)){
-      valid = false;
-      break;
-    }
-  }
-  if(valid) useful.insert(x);
- }
- int ans = 0;
-
- each(x,useful){
-  int len = 0;
-  F0R(i,31){
-    if((1<<i) > x){
-      len = i;
-      break;
-    }
-  }
-  if(len > p) continue;
-  ans = mod_add(ans, pre[p-len+1], MOD);
- }
- cout<<ans<<"\n";
 }
 
 inline namespace FileIO {
@@ -196,8 +148,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    // cin >> t;
-    preSolve();
+    cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();
