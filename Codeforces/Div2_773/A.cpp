@@ -97,7 +97,7 @@ ostream &operator<<(ostream &os, const T &c) {
 
 // ************************MATH START*********************************
 ll gcd(ll a, ll b) {if (b > a) {return gcd(b, a);} if (b == 0) {return a;} return gcd(b, a % b);}
-ll expo(ll a, ll b, ll mod) {a %= mod; ll res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
+ll expo(ll a, ll b, ll mod) {ll res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
 void extendgcd(ll a, ll b, ll*v) {if (b == 0) {v[0] = 1; v[1] = 0; v[2] = a; return ;} extendgcd(b, a % b, v); ll x = v[1]; v[1] = v[0] - v[1] * (a / b); v[0] = x; return;} //pass an arry of size1 3
 ll mminv(ll a, ll b) {ll arr[3]; extendgcd(a, b, arr); return arr[0];} //for non prime b
 ll mminvprime(ll a, ll b) {return expo(a, b - 2, b);}
@@ -126,7 +126,16 @@ vvi g(N);
 vi v(N);
 
 void solve() {
-
+  vpi v(3);
+  F0R(i,3)  cin>>v[i].S>>v[i].F; //{y coord, x ccord}
+  sortall(v);
+  dbg(v);
+  if(v[1].F == v[2].F){
+    cout<<v[2].S-v[1].S<<"\n";
+  }
+  else{
+    cout<<0<<"\n";
+  }
 }
 
 inline namespace FileIO {

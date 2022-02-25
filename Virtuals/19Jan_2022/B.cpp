@@ -97,7 +97,7 @@ ostream &operator<<(ostream &os, const T &c) {
 
 // ************************MATH START*********************************
 ll gcd(ll a, ll b) {if (b > a) {return gcd(b, a);} if (b == 0) {return a;} return gcd(b, a % b);}
-ll expo(ll a, ll b, ll mod) {a %= mod; ll res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
+ll expo(ll a, ll b, ll mod) {ll res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
 void extendgcd(ll a, ll b, ll*v) {if (b == 0) {v[0] = 1; v[1] = 0; v[2] = a; return ;} extendgcd(b, a % b, v); ll x = v[1]; v[1] = v[0] - v[1] * (a / b); v[0] = x; return;} //pass an arry of size1 3
 ll mminv(ll a, ll b) {ll arr[3]; extendgcd(a, b, arr); return arr[0];} //for non prime b
 ll mminvprime(ll a, ll b) {return expo(a, b - 2, b);}
@@ -124,9 +124,44 @@ const int N = 3e5, M = N;
 
 vvi g(N);
 vi v(N);
+vi dx = {-1,-2,-2,-1,1,2,2,1};
+vi dy = {2,1,-1,-2,-2,-1,1,2};
 
 void solve() {
-
+  int n;
+  cin>>n;
+  vector<vector<char>> grid(n, vector<char> (n,'_'));
+  F0R(i,n){
+    F0R(j,n){
+      if(grid[i][j] != '_') continue;
+      if((i+j)&1){
+        grid[i][j] = 'B';
+        F0R(k,8){
+          int x = i + dx[k];
+          int y = j + dy[k];
+          if(x >= 0 and x < n and y >= 0 and y < n and grid[x][y] == '_'){
+            grid[x][y] = 'W';
+          }
+        }
+      }
+      else{
+        grid[i][j] = 'W';
+        F0R(k,8){
+        int x = i + dx[k];
+        int y = j + dy[k];
+        if(x >= 0 and x < n and y >= 0 and y < n and grid[x][y] == '_'){
+          grid[x][y] = 'B';
+        }
+      }
+      }
+    }
+  }
+  for(auto& row: grid){
+    for(char& c: row){
+      cout<<c;
+    }
+    cout<<"\n";
+  }
 }
 
 inline namespace FileIO {
@@ -148,7 +183,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();

@@ -126,7 +126,25 @@ vvi g(N);
 vi v(N);
 
 void solve() {
+  int n,m,k,q;
+  cin>>n>>m>>k>>q;
+  vpi a(q);
+  F0R(i,q)  cin>>a[i].F>>a[i].S;
+  set<int> r,c;
+  int ct = 0;
+  R0F(i,q){
+    auto [ri,ci] = a[i];
+    bool rc = false, cc = false;
 
+    if(sz(c) == m or r.count(ri)) rc = true;
+    if(sz(r) == n or c.count(ci)) cc = true;
+
+    if(rc and cc) continue;
+    ct++;
+    r.insert(ri);
+    c.insert(ci);
+  }
+  cout<<expo(k,ct,998244353)<<"\n";
 }
 
 inline namespace FileIO {

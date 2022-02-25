@@ -97,7 +97,7 @@ ostream &operator<<(ostream &os, const T &c) {
 
 // ************************MATH START*********************************
 ll gcd(ll a, ll b) {if (b > a) {return gcd(b, a);} if (b == 0) {return a;} return gcd(b, a % b);}
-ll expo(ll a, ll b, ll mod) {a %= mod; ll res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
+ll expo(ll a, ll b, ll mod) {ll res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
 void extendgcd(ll a, ll b, ll*v) {if (b == 0) {v[0] = 1; v[1] = 0; v[2] = a; return ;} extendgcd(b, a % b, v); ll x = v[1]; v[1] = v[0] - v[1] * (a / b); v[0] = x; return;} //pass an arry of size1 3
 ll mminv(ll a, ll b) {ll arr[3]; extendgcd(a, b, arr); return arr[0];} //for non prime b
 ll mminvprime(ll a, ll b) {return expo(a, b - 2, b);}
@@ -126,7 +126,25 @@ vvi g(N);
 vi v(N);
 
 void solve() {
+  int n,x;
+  cin>>n>>x;
+  vl v(n);
+  multiset<ll> mst;
+  F0R(i,n){
+    cin>>v[i];
+    mst.insert(v[i]);
+  }
 
+  sortall(v);
+
+  each(num,v){
+    if(mst.find(num) != en(mst) and mst.find(num*x) != en(mst)){
+      mst.erase(mst.find(num));
+      mst.erase(mst.find(num*x));
+    }
+  }
+
+  cout<<sz(mst)<<"\n";
 }
 
 inline namespace FileIO {
