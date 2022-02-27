@@ -127,7 +127,32 @@ vvi g(N);
 vi v(N);
 
 void solve() {
+  int n,k;
+  cin>>n>>k;
+  string s;
+  cin>>s;
 
+  set<char> good;
+
+  rep(k){//klogk
+    char c;
+    cin>>c;
+    good.insert(c);
+  }
+  vi bad_indices;
+  
+  F0R(i,n){//n
+    if(good.count(s[i]) == 0) bad_indices.pb(i);
+  }
+
+  bad_indices.pb(n);
+
+  ll ans = 0;
+  F0R(i,n){
+    int j = *lb(all(bad_indices), i);
+    ans += j-i;
+  }
+  cout<<ans<<"\n";
 }
 
 inline namespace FileIO {
@@ -149,7 +174,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();

@@ -127,7 +127,40 @@ vvi g(N);
 vi v(N);
 
 void solve() {
+  int q;
+  cin>>q;
+  set<pi> mono;
+  map<int, set<int>> poly;
+  int id = 0;
+  rep(q){
+    int type;
+    cin>>type;
 
+    if(type == 1){
+      int budget;
+      cin>>budget;
+      ++id;
+      mono.insert(mp(id,budget));
+      poly[budget].insert(id);
+    }
+    else if(type == 2){//Monocarp serves
+      auto [id, budget] = *mono.begin();
+      cout<<id<<" ";
+      mono.erase(mono.begin());
+      if(sz(poly[budget]) > 1)  poly[budget].erase(id);
+      else poly.erase(budget);
+    } 
+    else{//Polcarp serves
+      auto it = --en(poly);
+      int budget = it->F;
+      int id = *((it->S).begin());
+
+      if(sz(it->S) == 1)  poly.erase(it);
+      else poly[budget].erase(id);
+      mono.erase(mp(id,budget));
+      cout<<id<<" ";
+    }
+  }
 }
 
 inline namespace FileIO {
@@ -149,7 +182,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();

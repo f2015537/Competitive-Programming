@@ -127,7 +127,7 @@ vvi g(N);
 vi v(N);
 
 void solve() {
-
+  cout<<lcm((ll)1e6,(ll)1e6-1)<<"\n";
 }
 
 inline namespace FileIO {
@@ -149,7 +149,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();

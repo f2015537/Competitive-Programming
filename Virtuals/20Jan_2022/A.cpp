@@ -127,7 +127,18 @@ vvi g(N);
 vi v(N);
 
 void solve() {
+  int b,g,n;
+  cin>>b>>g>>n;
 
+  int ct = 0;
+  F0R(i,n+1){
+    int x = i; // boys
+    int y = n - i; //girls 
+    if(x <= b and y <= g and y >= 0){
+      ct++;
+    }
+  }
+  cout<<ct<<"\n";
 }
 
 inline namespace FileIO {
@@ -149,7 +160,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();

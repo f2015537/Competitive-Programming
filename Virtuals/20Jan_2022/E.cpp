@@ -127,7 +127,26 @@ vvi g(N);
 vi v(N);
 
 void solve() {
+  int n;
+  cin>>n;
 
+  v.rsz(n);
+  each(x,v) cin>>x;
+  int mn = INF;
+  for(int i = 0; i < n-1; ++i){ //Anchor point 1
+    for(int j = i+1; j < n; ++j){ // Anchor point 2
+      vi temp = v;
+      each(x, temp) x *= j-i;
+      int d = (temp[j] - temp[i]) / (j-i);
+      int a = temp[i] - i*d;
+      vi temp2(n);
+      int ans = 0;
+      F0R(k,n)  temp2[k] = a + k*d, ans += temp2[k] != temp[k];
+      mn = min(mn,ans); 
+    }
+  }
+  if(n == 1)  cout<<0<<"\n";
+  else cout<<mn<<"\n";
 }
 
 inline namespace FileIO {

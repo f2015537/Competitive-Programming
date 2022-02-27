@@ -127,7 +127,24 @@ vvi g(N);
 vi v(N);
 
 void solve() {
+  int n;
+  cin>>n;
+  vi v(n),type(n);
+  each(x,v) cin>>x;
+  each(x,type)  cin>>x;
 
+  if(is_sorted(all(v))){
+    cout<<"YES\n";
+  }
+  else{
+    int sum = accumulate(all(type), 0);
+    if(sum == 0 or sum == n){
+      cout<<"NO\n";
+    }
+    else{
+      cout<<"YES\n";
+    }
+  }
 }
 
 inline namespace FileIO {

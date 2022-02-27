@@ -120,14 +120,43 @@ void dfs(int u, int par);
 const int MOD = 1'000'000'007;
 const int INF = 2e9;
 const ll INFL = 2e18;
-const int N = 3e5, M = N;
+const int N = 2e5+10, M = N;
 //=======================
 
 vvi g(N);
 vi v(N);
 
 void solve() {
+  int n;
+  cin>>n;
+  vi hsh(N);
 
+  rep(n){
+    int x;
+    cin>>x;
+    hsh[x]++;
+  }
+
+  vi ct(N);
+
+  for(int i = 1; i < N; ++i){//O(nlgn)
+    for(int j = i; j < N; j += i){
+      ct[i] += hsh[j];
+    }
+  }
+  int q;
+  cin>>q;
+
+  rep(q){//O(qlog(max(p,q)))
+    int ans = 0;
+    int p,q;
+    cin>>p>>q;
+    ans += ct[p] + ct[q];
+    // ll lcm = (p*1LL*q)/__gcd(p,q);
+    ll comm = lcm((ll)p,(ll)q);
+    if(comm < N) ans -= ct[comm];
+    cout<<ans<<"\n";
+  }
 }
 
 inline namespace FileIO {
@@ -149,7 +178,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();

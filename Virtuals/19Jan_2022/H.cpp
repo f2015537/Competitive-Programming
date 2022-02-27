@@ -97,7 +97,7 @@ ostream &operator<<(ostream &os, const T &c) {
 
 // ************************MATH START*********************************
 ll gcd(ll a, ll b) {if (b > a) {return gcd(b, a);} if (b == 0) {return a;} return gcd(b, a % b);}
-ll expo(ll a, ll b, ll mod) {a %= mod; ll res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
+ll expo(ll a, ll b, ll mod) {ll res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
 void extendgcd(ll a, ll b, ll*v) {if (b == 0) {v[0] = 1; v[1] = 0; v[2] = a; return ;} extendgcd(b, a % b, v); ll x = v[1]; v[1] = v[0] - v[1] * (a / b); v[0] = x; return;} //pass an arry of size1 3
 ll mminv(ll a, ll b) {ll arr[3]; extendgcd(a, b, arr); return arr[0];} //for non prime b
 ll mminvprime(ll a, ll b) {return expo(a, b - 2, b);}
@@ -119,15 +119,49 @@ void dfs(int u, int par);
 
 const int MOD = 1'000'000'007;
 const int INF = 2e9;
-const ll INFL = 2e18;
 const int N = 3e5, M = N;
 //=======================
 
 vvi g(N);
 vi v(N);
 
-void solve() {
+const int Z = 1e7 + 10; //change this for faster computation
 
+vi isPrime(Z,1);
+vi primes; //Stores all prime numbers from 1 to n
+vi lp(Z,-1); //lp stores lowest prime factor for all numbers from 1 to n
+vi hp(Z); //hp stores highest prime factor for all numbers from 1 to n
+
+//Declare the above in global scope
+
+void sieve(){ // O(NlglgN)
+  isPrime[0] = isPrime[1] = 0;
+  for(int i = 2; i < Z; ++i){
+    if(isPrime[i]){
+      primes.pb(i);
+      lp[i] = hp[i] = i;
+      for(int j = 2*i; j < Z; j += i){
+        isPrime[j] = 0;
+        if(lp[j] == -1) lp[j] = i;
+        hp[j] = i;
+      }
+    }
+  }
+}
+
+
+
+
+void solve() {
+  sieve();
+  int n;
+  cin>>n;
+  vi ans;
+  while(n > 1){
+    ans.pb(hp[n]);
+    n /= hp[n];
+  }
+  dbg(ans);
 }
 
 inline namespace FileIO {
@@ -149,7 +183,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();
