@@ -127,41 +127,41 @@ vvi g(N);
 vi v(N);
 
 void solve() {
-  int c;
-  cin>>c;
+  int n;
+  cin>>n;
 
-  int n = -1;
-  
-  F0R(i,30){
-    if((1<<i) > c){
-      n = i;
-      break;
+  vs names(n);
+  string vowels = "aeiou";
+  each(name,names)  cin>>name;
+  vl v(32);
+
+  for(int mask = 1; mask < 32; ++mask){
+    vi indices;
+    for(int i = 0; i < 5; ++i){
+      if(mask & (1<<i)) indices.pb(i);
+    }
+    each(name, names){
+      bool ok = true;
+      each(index, indices){
+        char vowel = vowels[index];
+        ok &= find(all(name), vowel) != en(name);
+      }
+      if(ok)  v[mask]++;
     }
   }
-  ll ans = -INF;
-  for(int a = 0; a < (1<<n); ++a){
-    dbg(a,c);
-    int b = 0;
-    for(int i = 0; i < n; ++i){
-      int flag1 = a & (1<<i);//is ith bit of a set
-      int flag2 = c & (1<<i);//is ith bit of c set
-      dbg(i,flag1,flag2);
-      if(flag1 and flag2){
-        //ith bit of b is unset
-      }
-      else if(flag1 and !flag2){
-        //1^? = 0
-        b |= (1<<i);
-      }
-      else if(!flag1 and flag2){
-        //0^? = 1
-        b |= (1<<i);
-      }
-      else{
-        //0^? = 0
-      }
+
+  for(int mask = 1; mask < 32; ++mask){
+    if(v[mask] < 3)  v[mask] = 0;
+    else v[mask] = (v[mask] * (v[mask]-1) * (v[mask]-2))/6;
+  }
+
+  ll ans = 0;
+  int sign = 1;
+  for(int i = 1; i <= 5; ++i){
+    for(int mask = 1; mask < 32; ++mask){
+      if(__builtin_popcount(mask) == i) ans += sign * v[mask];
     }
-    ans = max(ans, a * 1LL * b);
+    sign *= -1;
   }
   cout<<ans<<"\n";
 }
@@ -185,7 +185,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    // cin >> t;
+    cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();

@@ -126,43 +126,27 @@ const int N = 3e5, M = N;
 vvi g(N);
 vi v(N);
 
-void solve() {
-  int c;
-  cin>>c;
+//Let's say we are at the ith bit
+//Let's find the contribution of ith bit to xorsum
+//If there are k subsequences in which the ith bit is set in the bitwise xor of subsequence
+//Let c = number of elements in array whose ith bit is set
+//Let n-c = number of elements in array whose ith bit is unset
+//k = 2^(c-1) * 2^(n-c) = 2^(n-1)..for non-zero c
+//Contribution of ith bit = 2^i * 2^(n-1)
 
-  int n = -1;
-  
-  F0R(i,30){
-    if((1<<i) > c){
-      n = i;
-      break;
-    }
+void solve() {
+  int n,m;
+  cin>>n>>m;
+
+  int x = 0;
+
+  rep(m){
+    int l,r,y;
+    cin>>l>>r>>y;
+    x |= y;
   }
-  ll ans = -INF;
-  for(int a = 0; a < (1<<n); ++a){
-    dbg(a,c);
-    int b = 0;
-    for(int i = 0; i < n; ++i){
-      int flag1 = a & (1<<i);//is ith bit of a set
-      int flag2 = c & (1<<i);//is ith bit of c set
-      dbg(i,flag1,flag2);
-      if(flag1 and flag2){
-        //ith bit of b is unset
-      }
-      else if(flag1 and !flag2){
-        //1^? = 0
-        b |= (1<<i);
-      }
-      else if(!flag1 and flag2){
-        //0^? = 1
-        b |= (1<<i);
-      }
-      else{
-        //0^? = 0
-      }
-    }
-    ans = max(ans, a * 1LL * b);
-  }
+
+  ll ans = mod_mul(expo(2,n-1,MOD),x,MOD);
   cout<<ans<<"\n";
 }
 
@@ -185,7 +169,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    // cin >> t;
+    cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();

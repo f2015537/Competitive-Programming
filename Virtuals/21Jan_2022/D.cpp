@@ -127,43 +127,39 @@ vvi g(N);
 vi v(N);
 
 void solve() {
-  int c;
-  cin>>c;
+  int n;
+  cin>>n;
 
-  int n = -1;
-  
-  F0R(i,30){
-    if((1<<i) > c){
-      n = i;
-      break;
-    }
+  v.rsz(n);
+  ll sum = 0;
+  each(x,v) {
+    cin>>x;
+    sum += x;
   }
-  ll ans = -INF;
-  for(int a = 0; a < (1<<n); ++a){
-    dbg(a,c);
-    int b = 0;
-    for(int i = 0; i < n; ++i){
-      int flag1 = a & (1<<i);//is ith bit of a set
-      int flag2 = c & (1<<i);//is ith bit of c set
-      dbg(i,flag1,flag2);
-      if(flag1 and flag2){
-        //ith bit of b is unset
-      }
-      else if(flag1 and !flag2){
-        //1^? = 0
-        b |= (1<<i);
-      }
-      else if(!flag1 and flag2){
-        //0^? = 1
-        b |= (1<<i);
-      }
-      else{
-        //0^? = 0
-      }
-    }
-    ans = max(ans, a * 1LL * b);
+
+  vi ans1,ans2;
+  ans1 = ans2 = v;
+
+  F0R(i,n){
+    if(i&1) ans1[i] = 1;
+    else ans2[i] = 1;
   }
-  cout<<ans<<"\n";
+
+  ll sum1 = 0, sum2 = 0;
+
+  F0R(i,n){
+    sum1 += abs(v[i]-ans1[i]);
+    sum2 += abs(v[i]-ans2[i]);
+  }
+
+  if(2*sum1 <= sum){
+    each(x,ans1)  cout<<x<<" ";
+    cout<<"\n";
+  }
+  else{
+    each(x,ans2)  cout<<x<<" ";
+    cout<<"\n";
+  }
 }
 
 inline namespace FileIO {
@@ -185,7 +181,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    // cin >> t;
+    cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();

@@ -125,45 +125,28 @@ const int N = 3e5, M = N;
 
 vvi g(N);
 vi v(N);
+int n,k;
+
+bool pred(int mid){
+  cout<<"? 1 "<<mid<<endl;
+  int x;
+  cin>>x;
+  return (mid-x) >= k;
+}
 
 void solve() {
-  int c;
-  cin>>c;
+  int t;
+  cin>>n>>t>>k;
 
-  int n = -1;
-  
-  F0R(i,30){
-    if((1<<i) > c){
-      n = i;
-      break;
-    }
+  int lo = 1, hi = n;
+
+  while(hi - lo > 1){
+    int mid = (lo+hi)>>1;
+    if(pred(mid)) hi = mid;
+    else lo = mid+1;
   }
-  ll ans = -INF;
-  for(int a = 0; a < (1<<n); ++a){
-    dbg(a,c);
-    int b = 0;
-    for(int i = 0; i < n; ++i){
-      int flag1 = a & (1<<i);//is ith bit of a set
-      int flag2 = c & (1<<i);//is ith bit of c set
-      dbg(i,flag1,flag2);
-      if(flag1 and flag2){
-        //ith bit of b is unset
-      }
-      else if(flag1 and !flag2){
-        //1^? = 0
-        b |= (1<<i);
-      }
-      else if(!flag1 and flag2){
-        //0^? = 1
-        b |= (1<<i);
-      }
-      else{
-        //0^? = 0
-      }
-    }
-    ans = max(ans, a * 1LL * b);
-  }
-  cout<<ans<<"\n";
+  if(pred(lo))  cout<<"! "<<lo<<endl;
+  else cout<<"! "<<hi<<endl;
 }
 
 inline namespace FileIO {

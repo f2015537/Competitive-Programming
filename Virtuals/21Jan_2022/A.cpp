@@ -127,43 +127,21 @@ vvi g(N);
 vi v(N);
 
 void solve() {
-  int c;
-  cin>>c;
+  int n;
+  cin>>n;
+  v.rsz(n);
+  each(x,v) cin>>x;
 
-  int n = -1;
-  
-  F0R(i,30){
-    if((1<<i) > c){
-      n = i;
-      break;
-    }
+  vi suf(n+1,INF);
+
+  for(int i = n - 1; i >= 0; --i){
+    suf[i] = min(suf[i+1], v[i]);
   }
-  ll ans = -INF;
-  for(int a = 0; a < (1<<n); ++a){
-    dbg(a,c);
-    int b = 0;
-    for(int i = 0; i < n; ++i){
-      int flag1 = a & (1<<i);//is ith bit of a set
-      int flag2 = c & (1<<i);//is ith bit of c set
-      dbg(i,flag1,flag2);
-      if(flag1 and flag2){
-        //ith bit of b is unset
-      }
-      else if(flag1 and !flag2){
-        //1^? = 0
-        b |= (1<<i);
-      }
-      else if(!flag1 and flag2){
-        //0^? = 1
-        b |= (1<<i);
-      }
-      else{
-        //0^? = 0
-      }
-    }
-    ans = max(ans, a * 1LL * b);
-  }
-  cout<<ans<<"\n";
+
+  int ct = 0;
+
+  for(int i = 0; i < n; ++i)  ct += suf[i] < v[i];
+  cout<<ct<<"\n";
 }
 
 inline namespace FileIO {
@@ -185,7 +163,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    // cin >> t;
+    cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();

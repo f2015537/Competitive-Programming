@@ -127,43 +127,25 @@ vvi g(N);
 vi v(N);
 
 void solve() {
-  int c;
-  cin>>c;
+  int n;
+  cin>>n;
+  v.rsz(n);
+  each(x,v) cin>>x;
 
-  int n = -1;
-  
-  F0R(i,30){
-    if((1<<i) > c){
-      n = i;
-      break;
+  int i = 1;
+  while(i + 1 < sz(v) and sz(v) > 2){
+    int x = v[i];
+    int y = v[i-1];
+    int z = v[i+1];
+    dbg(v);
+    if(abs(x-y) + abs(x-z) == abs(y-z)){
+      v.erase(v.begin()+i);
     }
+    else i++;
   }
-  ll ans = -INF;
-  for(int a = 0; a < (1<<n); ++a){
-    dbg(a,c);
-    int b = 0;
-    for(int i = 0; i < n; ++i){
-      int flag1 = a & (1<<i);//is ith bit of a set
-      int flag2 = c & (1<<i);//is ith bit of c set
-      dbg(i,flag1,flag2);
-      if(flag1 and flag2){
-        //ith bit of b is unset
-      }
-      else if(flag1 and !flag2){
-        //1^? = 0
-        b |= (1<<i);
-      }
-      else if(!flag1 and flag2){
-        //0^? = 1
-        b |= (1<<i);
-      }
-      else{
-        //0^? = 0
-      }
-    }
-    ans = max(ans, a * 1LL * b);
-  }
-  cout<<ans<<"\n";
+  cout<<sz(v)<<"\n";
+  each(x,v) cout<<x<<" ";
+  cout<<"\n";
 }
 
 inline namespace FileIO {
@@ -185,7 +167,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    // cin >> t;
+    cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();
