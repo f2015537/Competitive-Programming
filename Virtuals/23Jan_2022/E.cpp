@@ -167,14 +167,6 @@ void solve() {
     }
   }
 
-  // F0R(i,n){
-  //   F0R(j,m){
-  //     cout<<temp[i][j];
-  //   }
-  //   cout<<"\n";
-  // }
-  // cout<<"\n";
-
   if(temp==grid){
     cout<<"YES\n";
   }
