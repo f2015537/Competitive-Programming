@@ -23,6 +23,8 @@
 
 # Ignore `bin` dir
 bin/
+TLE1/
+TLE2/
 # or
 */bin/*
 
