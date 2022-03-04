@@ -19,6 +19,7 @@
 *.mkv
 *.pdf
 *.txt
+*.pptx
 
 # Ignore `bin` dir
 bin/
