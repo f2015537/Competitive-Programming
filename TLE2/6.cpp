@@ -118,7 +118,6 @@ void ipgraph(int n, int m);
 void dfs(int u, int par);
 
 const int MOD = 1'000'000'007;
-const int MOD2 = 998244353;
 const int INF = 2e9;
 const ll INFL = 2e18;
 const int N = 3e5, M = N;
@@ -126,9 +125,31 @@ const int N = 3e5, M = N;
 
 vvi g(N);
 vi v(N);
+ll n,x,y;
+
+//https://codeforces.com/edu/course/2/lesson/6/2/practice/contest/283932/problem/C
+
+bool pred(ll mid){
+  ll ct = 0;
+  // for(ll i = min(x,y); i <= mid; i += x) ct++;
+  // for(ll i = min(x,y); i <= mid; i += y) ct++;
+  if(mid >= min(x,y)) {
+    ct += (mid-min(x,y))/x + 1;
+    ct += (mid-min(x,y))/y + 1;
+  }
+  return ct - 1 >= n;
+}
 
 void solve() {
-
+  cin>>n>>x>>y;
+  ll lo = 1, hi = 1e18;
+  while(hi - lo > 1){
+    ll mid = (hi+lo)>>1;
+    if(pred(mid)) hi = mid;
+    else lo = mid+1;
+  }
+  if(pred(lo))  cout<<lo<<"\n";
+  else cout<<hi<<"\n";
 }
 
 inline namespace FileIO {
@@ -150,7 +171,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();

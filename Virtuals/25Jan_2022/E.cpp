@@ -126,9 +126,50 @@ const int N = 3e5, M = N;
 
 vvi g(N);
 vi v(N);
+vi fact(N);
+
+void preSolve(){
+  fact[0] = 1;
+  FOR(i,1,N)  fact[i] = mod_mul(i,fact[i-1],MOD2);
+}
+
+int ncr(int  n, int r){
+  return mod_div(fact[n], mod_mul(fact[r],fact[n-r],MOD2), MOD2);
+}
 
 void solve() {
+  int n;
+  cin>>n;
+  map<int,int> hsh;
+  rep(n){
+    int x;
+    cin>>x;
+    hsh[x]++;
+  }
+  dbg(hsh);
+  auto it = hsh.rbegin();
+  int freq1 = it->S;
+  int max = it->F;
+  dbg(freq1);
+  if(freq1 > 1) {
+    cout<<fact[n]<<"\n";
+    return;
+  }  
+  ++it;
+  int freq2 = it->S;
+  int smax = it->F;
+  if(max-smax > 1){
+    cout<<"0\n";
+    return;
+  }
 
+  ll ans = mod_sub(fact[n],mod_div(fact[n],freq2+1,MOD2),MOD2);
+  // ll temp2 = mod_mul(fact[freq2],fact[n-1-freq2],MOD2);
+  // FOR(i,freq2,n){
+  //   dbg(ncr(i,freq2),fact[freq2],fact[n-1-freq2]);
+  //   ans = mod_sub(ans, mod_mul(ncr(i,freq2),temp2,MOD2), MOD2);
+  // }
+  cout<<ans<<"\n";
 }
 
 inline namespace FileIO {
@@ -151,6 +192,7 @@ int main() {
     setIO();
     int t = 1;
     cin >> t;
+    preSolve();
     F0R(i,t) {
       dnl(i+1);
       solve();

@@ -118,7 +118,6 @@ void ipgraph(int n, int m);
 void dfs(int u, int par);
 
 const int MOD = 1'000'000'007;
-const int MOD2 = 998244353;
 const int INF = 2e9;
 const ll INFL = 2e18;
 const int N = 3e5, M = N;
@@ -128,7 +127,10 @@ vvi g(N);
 vi v(N);
 
 void solve() {
-
+  vi v = {4,7,7};
+  do{
+    dbg(v);
+  }while(next_permutation(all(v)));
 }
 
 inline namespace FileIO {
@@ -150,7 +152,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();

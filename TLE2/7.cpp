@@ -118,7 +118,6 @@ void ipgraph(int n, int m);
 void dfs(int u, int par);
 
 const int MOD = 1'000'000'007;
-const int MOD2 = 998244353;
 const int INF = 2e9;
 const ll INFL = 2e18;
 const int N = 3e5, M = N;
@@ -126,9 +125,43 @@ const int N = 3e5, M = N;
 
 vvi g(N);
 vi v(N);
+int n,l,r;
+
+bool pred(int mid, int y){
+  return v[mid] <= y;
+}
 
 void solve() {
+  cin>>n>>l>>r;
+  v.rsz(n);
+  each(x,v) cin>>x;
+  sortall(v);
 
+  ll ct = 0;
+  F0R(k,n){
+    int x = v[k];
+    int y = l - x;
+    //Find the first index in the array such that v[index] >= y
+    int i = lb(all(v), y) - beg(v);
+    if(i == n)  continue;
+    y = r - x;
+    //Find the last index in the array such that v[index] <= y
+    //T T T T F
+    // int lo = 0, hi = n-1;
+    // while(hi - lo > 1){
+    //   int mid = (hi+lo)>>1;
+    //   if(pred(mid,y)) lo = mid;
+    //   else hi = mid-1;
+    // }
+    // int j;
+    // if(pred(hi,y))  j = hi;
+    // else if(pred(lo,y)) j = lo;
+    // else continue;
+    int j = --ub(all(v),y) - beg(v);
+    ct += j-i+1;
+    if(k >= i and k <= j) ct--;
+  }
+  cout<<ct/2<<"\n";
 }
 
 inline namespace FileIO {

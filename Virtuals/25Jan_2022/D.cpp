@@ -118,17 +118,41 @@ void ipgraph(int n, int m);
 void dfs(int u, int par);
 
 const int MOD = 1'000'000'007;
-const int MOD2 = 998244353;
 const int INF = 2e9;
 const ll INFL = 2e18;
 const int N = 3e5, M = N;
 //=======================
 
 vvi g(N);
-vi v(N);
+vl v;
+
+bool pred(ll mid){
+  bool ok = true;
+  each(x,v) ok &= x <= mid;
+  return ok;
+}
 
 void solve() {
+  int n; cin>>n;
+  v.rsz(n);
+  ll sum = 0;
 
+  each(x,v){
+    cin>>x;
+    sum += x;
+  }
+
+  ll lo = ceil_div(sum,n-1), hi = 1e13;
+
+  while(hi - lo > 1){
+    ll mid = (lo+hi)>>1;
+    if(pred(mid)) hi = mid;
+    else lo = mid+1;
+  }
+  ll ans;
+  if(pred(lo)) ans = lo;
+  else ans = hi;
+  cout<< (n-1)*ans - sum << "\n";
 }
 
 inline namespace FileIO {

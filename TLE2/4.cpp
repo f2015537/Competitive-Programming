@@ -126,6 +126,8 @@ const int N = 3e5, M = N;
 vvi g(N);
 vi v(N);
 
+//https://codeforces.com/problemset/problem/1486/C1
+
 void solve() {
   int n;
   cin>>n;

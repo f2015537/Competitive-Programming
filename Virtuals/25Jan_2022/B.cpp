@@ -118,7 +118,6 @@ void ipgraph(int n, int m);
 void dfs(int u, int par);
 
 const int MOD = 1'000'000'007;
-const int MOD2 = 998244353;
 const int INF = 2e9;
 const ll INFL = 2e18;
 const int N = 3e5, M = N;
@@ -128,7 +127,40 @@ vvi g(N);
 vi v(N);
 
 void solve() {
+  int n;
+  cin>>n;
+  vi q(n+1,-INF);
+  set<int> unvisited;
+  FOR(i,1,n+1){
+    cin>>q[i];
+    unvisited.insert(i);
+  }
 
+  vi p(n+1,-INF);
+
+  FOR(i,1,n+1){
+    if(q[i] > q[i-1]){
+      if(unvisited.count(q[i])){
+        p[i] = q[i];
+        unvisited.erase(p[i]);
+      }
+      else{
+        cout<<"-1\n";
+        return;
+      }
+    }
+    else{
+      p[i] = *unvisited.begin();
+      unvisited.erase(unvisited.begin());
+      if(p[i] > q[i]){
+        cout<<"-1\n";
+        return;
+      }
+    }
+  }
+
+  FOR(i,1,n+1) cout<<p[i]<<" ";
+  cout<<"\n";
 }
 
 inline namespace FileIO {

@@ -127,6 +127,8 @@ vvi g(N);
 vi v(N);
 ll w,h,n;
 
+//https://codeforces.com/edu/course/2/lesson/6/2/practice/contest/283932/problem/A
+
 bool pred(ll mid){
   return min(mid/w,(ll)1e9) * min(mid/h,(ll)1e9) >= n;
 }

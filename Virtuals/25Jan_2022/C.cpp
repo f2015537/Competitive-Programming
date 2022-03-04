@@ -118,7 +118,6 @@ void ipgraph(int n, int m);
 void dfs(int u, int par);
 
 const int MOD = 1'000'000'007;
-const int MOD2 = 998244353;
 const int INF = 2e9;
 const ll INFL = 2e18;
 const int N = 3e5, M = N;
@@ -128,7 +127,38 @@ vvi g(N);
 vi v(N);
 
 void solve() {
+  int n,k;
+  cin>>n>>k;
 
+  v.rsz(n+1);
+  FOR(i,1,n+1)  cin>>v[i];
+  vi pre(n+1);
+  vi peaks; //Contains all indices that are peaks
+  FOR(i,2,n){
+    if(v[i] > v[i-1] and v[i] > v[i+1]){
+      peaks.pb(i);
+    }
+  }
+  each(peak, peaks){
+    //This peak can contribute to ranges [peak - k + 2,peak-1]
+    int l = max(peak-k+2, 1);
+    int r = peak;
+    dbg(peak,l,r);
+    pre[l]++;
+    pre[r]--;
+  }  
+
+  pi ans = mp(-INF,-INF);
+  FOR(i,1,n+1) {
+    pre[i] += pre[i-1];
+    if(pre[i])  ans = max(ans,mp(pre[i]+1,-i));
+  }
+  if(ans == mp(-INF,-INF)){
+    cout<<"1 1\n";
+  }
+  else{
+    cout<<ans.F<<" "<<-ans.S<<"\n";
+  }
 }
 
 inline namespace FileIO {

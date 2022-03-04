@@ -118,7 +118,6 @@ void ipgraph(int n, int m);
 void dfs(int u, int par);
 
 const int MOD = 1'000'000'007;
-const int MOD2 = 998244353;
 const int INF = 2e9;
 const ll INFL = 2e18;
 const int N = 3e5, M = N;
@@ -128,7 +127,22 @@ vvi g(N);
 vi v(N);
 
 void solve() {
+  int n;
+  cin>>n;
+  int ans = ceil_div(n+1,2);
+  cout<<ans<<"\n";
+  int ct = 0;
+  for(int j = 1; j <= ans; ++j){
+    cout<<1<<" "<<j<<"\n";
+    ct++;
+    if(ct == n) return;
+  }
 
+  for(int i = 2; i <= ans; ++i){
+    cout<<i<<" "<<ans<<"\n";
+    ct++;
+    if(ct == n) return;
+  }
 }
 
 inline namespace FileIO {
@@ -150,7 +164,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     F0R(i,t) {
       dnl(i+1);
       solve();
