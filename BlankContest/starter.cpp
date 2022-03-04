@@ -1,6 +1,10 @@
 #include<bits/stdc++.h>
 
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
+
 using namespace std;
+using namespace __gnu_pbds;
 
 typedef long long ll;
 typedef unsigned long long ull;
@@ -28,7 +32,15 @@ typedef vector<pld>  vpld;
 typedef vector<pd>    vpd;
 
 typedef vector<vi>    vvi;
-typedef vector<vl>    vvl;  
+typedef vector<vl>    vvl; 
+
+template<class T>
+using indexed_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update> ;
+//indexed_set<int> s;
+//cout<<(*s.find_by_order(2)); ->Gives element at 2nd index(0 based indexing)
+//cout<<s.order_of_key(5); ->gives number of elements strictly less than 5
+//We can also use all the methods provided by a normal set. Ex. s.lower_bound(val)
+//Works with dbg too!! (yay :P) 
 
 #define mp  make_pair
 #define pb  push_back
