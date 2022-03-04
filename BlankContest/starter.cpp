@@ -139,6 +139,10 @@ const int N = 3e5, M = N;
 vvi g(N);
 vi v(N);
 
+void preSolve(){
+
+}
+
 void solve() {
 
 }
@@ -163,6 +167,7 @@ int main() {
     setIO();
     int t = 1;
     cin >> t;
+    preSolve();
     F0R(i,t) {
       dnl(i+1);
       solve();
