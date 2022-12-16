@@ -144,7 +144,17 @@ void preSolve(){
 }
 
 void solve() {
-
+  int n;
+  cin>>n;
+  set<int> st;
+  st.insert(n);
+  while(true){
+    n++;
+    while(n%10 == 0)  n /= 10;
+    if(st.count(n)) break;
+    st.insert(n);
+  }
+  cout<<sz(st);
 }
 
 inline namespace FileIO {
@@ -166,7 +176,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     cout<<fixed<<setprecision(10);
     preSolve();
     F0R(i,t) {

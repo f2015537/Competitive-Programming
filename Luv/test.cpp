@@ -144,7 +144,7 @@ void preSolve(){
 }
 
 void solve() {
-
+  cout<<sqrt(16);
 }
 
 inline namespace FileIO {
@@ -166,7 +166,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     cout<<fixed<<setprecision(10);
     preSolve();
     F0R(i,t) {

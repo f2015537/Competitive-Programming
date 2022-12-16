@@ -144,6 +144,16 @@ void preSolve(){
 }
 
 void solve() {
+  string username1 = "zxyzxxyz";
+  string username2 = "xxzy";
+  int p = 3;
+
+  for(int i = 0; i < sz(username1); ++i){
+    for(int j = i; j < i + p and j < sz(username1); j+=p){
+      cout<<username1[j];
+    }
+    cout<<"\n";
+  }
 
 }
 
@@ -166,7 +176,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     cout<<fixed<<setprecision(10);
     preSolve();
     F0R(i,t) {

@@ -143,8 +143,40 @@ void preSolve(){
 
 }
 
-void solve() {
+void merge(int l, int r, int mid){
+  vi lArray,rArray;
+  for(int i = l; i <= mid; ++i) lArray.pb(v[i]);
+  for(int i = mid+1; i <= r; ++i) rArray.pb(v[i]);
+  lArray.pb(INF);
+  rArray.pb(INF);
+  int lp = 0, rp = 0;
+  int ct = 0;
+  while(ct < r-l+1){
+    if(lArray[lp] < rArray[rp]){
+      v[l+ct] = lArray[lp];
+      lp++;
+    }
+    else{
+      v[l+ct] = rArray[rp];
+      rp++;
+    }
+    ct++;
+  }
+}
 
+void merge_sort(int l, int r){
+  if(l==r)  return;
+  int mid = (l+r)/2;
+  merge_sort(l,mid);
+  merge_sort(mid+1,r);
+  merge(l,r,mid);
+}
+
+void solve() {
+  function<int(int)> fun = [&](int x){
+    return x+3;
+  };
+  cout<<fun(10);
 }
 
 inline namespace FileIO {
@@ -166,7 +198,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     cout<<fixed<<setprecision(10);
     preSolve();
     F0R(i,t) {

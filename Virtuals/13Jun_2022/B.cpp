@@ -144,7 +144,31 @@ void preSolve(){
 }
 
 void solve() {
+  int n;
+  cin>>n;
+  vi v(n);
+  F0R(i,n)  cin>>v[i];
+  if(n==1){
+    cout<<"-1\n";
+    return;
+  }
 
+  vi a(n);
+
+  F0R(i,n)  a[i] = i+1;
+  dbg(a);
+
+  int j = 0;
+  F0R(i,n){
+    if(v[i] == a[j]){
+      j = j+1;
+      j %= n;
+    }
+    cout<<a[j]<<" ";
+    a.erase(a.begin()+j);
+    j = j+1;
+    j %= n;
+  }
 }
 
 inline namespace FileIO {

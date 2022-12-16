@@ -144,7 +144,38 @@ void preSolve(){
 }
 
 void solve() {
+  ll n,m;
+  cin>>n>>m;
+  vl pre = {0};
+  set<int> block;
+  ll limit = -1;
+  for(ll i = m; i <= n; i+=m){
+    if(block.count(i%10)){
+      limit = i-m;
+      break;
+    }
+    block.insert(i%10);
+    dbg(i);
+    pre.pb(pre.back() + i%10);
+  }
+  dbg(pre);
+  dbg(limit);
+  dbg(block);
 
+  if(limit == -1){
+    cout<<pre.back()<<"\n";
+  }
+  else{
+    //how many blocks can fit within n
+    ll blocks = n/limit;
+    ll ans = blocks*pre.back();
+    dbg(ans);
+    for(ll i = blocks*limit+m; i <= n; i+=m){
+      ans += i%10;
+      // dbg(i,i%10);
+    }
+    cout<<ans<<"\n";
+  }
 }
 
 inline namespace FileIO {

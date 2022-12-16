@@ -144,7 +144,55 @@ void preSolve(){
 }
 
 void solve() {
+  int n,k;
+  cin>>n>>k;
 
+  v.rsz(n);
+
+  each(x,v) cin>>x;
+
+  
+
+  set<int> st; //This contains all k largest elemens
+
+  int temp = n;
+  ll x = 0;
+  rep(k){
+    st.insert(temp);
+    x += temp;
+    temp--;
+  }
+
+  int l = -1;
+  ll ans = 1;
+  F0R(i,n){
+    if(st.count(v[i])){
+      l = i;
+      break;
+    }
+  }
+
+
+  int r = -1;
+
+  R0F(i,n){
+    if(st.count(v[i])){
+      r = i;
+      break;
+    }
+  }
+  dbg(l,r);
+  dbg(st);
+  int ct = 0;
+  for(int i = l; i <= r; ++i){
+    if(st.count(v[i])){
+      dbg(ct);
+      ans = mod_mul(ans, ct+1, MOD2);
+      ct = 0;
+    }
+    else ct++;
+  }
+  cout<<x<<" "<<ans<<"\n";
 }
 
 inline namespace FileIO {
@@ -166,7 +214,7 @@ inline namespace FileIO {
 int main() {
     setIO();
     int t = 1;
-    cin >> t;
+    // cin >> t;
     cout<<fixed<<setprecision(10);
     preSolve();
     F0R(i,t) {

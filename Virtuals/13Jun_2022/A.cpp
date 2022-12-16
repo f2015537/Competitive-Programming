@@ -144,7 +144,20 @@ void preSolve(){
 }
 
 void solve() {
+  int n;
+  cin>>n;
+  vi v(n);
+  F0R(i,n)  cin>>v[i];
+  dbg(v);
 
+  //All odd
+  int ct1 = 0, ct2 = ct1;
+
+  F0R(i,n){
+    if(v[i]&1)  ct1++;
+    else ct2++;
+  }
+  cout<<min(ct1,ct2)<<"\n";
 }
 
 inline namespace FileIO {
