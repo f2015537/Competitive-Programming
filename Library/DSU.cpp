@@ -38,7 +38,7 @@ public:
 		a = find(a);
 		b = find(b);
 
-		if(a == b) continue;
+		if(a == b) return;
 
 		if(rank[a] > rank[b]){
 			parent[b] = a;
